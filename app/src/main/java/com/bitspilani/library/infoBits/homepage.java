@@ -3,6 +3,7 @@ package com.bitspilani.library.infoBits;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -12,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -19,7 +21,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
@@ -37,12 +38,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitspilani.library.infoBits.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,7 +60,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
-import android.content.SharedPreferences;
 
 public class homepage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -72,19 +73,19 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
     private ProgressBar resPBar;
     Button reserveB;
  //   ArrayList<RadioButton> pagination = new ArrayList<>();
-    ArrayList<String> urls = new ArrayList<>();
+ ArrayList<String> urls = new ArrayList<>();
     ArrayList<Bitmap> images = new ArrayList<>();
     MenuItem cat;
-   // RadioGroup pagin;
+    // RadioGroup pagin;
     SharedPreferences login_info;
     SharedPreferences.Editor edit_login_info;
     Map<String, ?> user;
     private ProgressBar spinner;
     public static String username, name, password, usercat, email, avatar;
     public static FileInputStream fileInput = null;
-    public final static String apiURL = "http://172.21.1.15/apis/";
-    public final static String imageApiURL = "http://172.21.1.15/uploads/";
-//    public final static String apiURL = "http://192.168.43.71:80/infoBITS/apis/";
+    public final static String apiURL = "http://library.bits-pilani.ac.in/apis/";
+    public final static String imageApiURL = "http://library.bits-pilani.ac.in/uploads/";
+    //    public final static String apiURL = "http://192.168.43.71:80/infoBITS/apis/";
 //    public final static String imageApiURL = "http://192.168.43.71:80/infoBITS/uploads/";
     File dir;
     private GoogleApiClient client;
@@ -242,7 +243,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
             } else if (id == R.id.od_id) {
                 i = new Intent(homepage.this, OnlineDb.class);
             } else if (id == R.id.opac_id) {
-                i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://172.21.1.37"));
+                i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://libcatalog.bits-pilani.ac.in/"));
             }
             startActivity(i);
         }
@@ -300,7 +301,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
             LogInToast();
         } else {
            // spinner.setVisibility(View.VISIBLE);
-            Intent browserIntent =  new Intent(Intent.ACTION_VIEW,Uri.parse("http://172.21.1.37"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://libcatalog.bits-pilani.ac.in/"));
                     //new Intent(homepage.this,LoadBooks.class).putExtra("url","http://172.21.1.37");
             startActivity(browserIntent);
         }

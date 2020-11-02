@@ -2,6 +2,7 @@ package com.bitspilani.library.infoBits;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +14,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.bitspilani.library.infoBits.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,7 +104,7 @@ public class LibRes extends homepage{
 
     public void onClickIR(View view) {
         spinner.setVisibility(View.VISIBLE);
-        Intent browserIntent = new Intent(LibRes.this,LoadBooks.class).putExtra("url","http://eprints.bits-pilani.ac.in/");
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://eprints.bits-pilani.ac.in/"));
         startActivity(browserIntent);
     }
 
