@@ -46,5 +46,5 @@ Get a list of new arrivals of books and journals.
  - [X] Implement notice board.
   </br>
  ----
- **Link to infoBITS website:** [BITS Pilani Library](http://172.21.1.15/ "infoBITS") 
+ **Link to infoBITS website:** [BITS Pilani Library](http://library.bits-pilani.ac.in/ "infoBITS") 
  
