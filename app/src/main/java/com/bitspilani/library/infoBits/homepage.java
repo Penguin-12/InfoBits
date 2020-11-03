@@ -296,16 +296,6 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         }
     }
 
-    public void onClickOPAC(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-           // spinner.setVisibility(View.VISIBLE);
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://libcatalog.bits-pilani.ac.in/"));
-                    //new Intent(homepage.this,LoadBooks.class).putExtra("url","http://172.21.1.37");
-            startActivity(browserIntent);
-        }
-    }
 
     public void onClickCWL(View view) {
         if (user.isEmpty()) {

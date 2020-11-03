@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bitspilani.library.infoBits.homepage"
+    tools:context="com.bitspilani.library.infoBits.LibRes"
     android:id="@+id/drawer_layout">
 
 
@@ -14,8 +14,10 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:id="@+id/nav_toolbar" app:logo="@mipmap/libr"
+            android:id="@+id/nav_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:logo="@mipmap/libr"
             android:background="@color/colorPrimaryDark"
             android:minHeight="?attr/actionBarSize"
             android:fitsSystemWindows="true"
@@ -23,72 +25,96 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/progressBarRes"
-            android:visibility="gone"
-            android:layout_centerHorizontal="true"
-            android:progressTint="@color/colorPrimaryDark"
-            android:progressTintMode="src_in"
-            android:indeterminate="false"
-            tools:targetApi="lollipop" />
-
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/libricons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#e0dfeb"
             android:layout_below="@+id/nav_toolbar"
-            android:id="@+id/libricons"
-            android:layout_margin="12dp">
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="#e0dfeb"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBarRes"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="50dp"
+                android:indeterminate="false"
+                android:progressTint="@color/colorPrimaryDark"
+                android:progressTintMode="src_in"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eb"
+                tools:targetApi="lollipop" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/opac"
-                android:src="@mipmap/opac"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:background="#e0dfeb"
                 android:onClick="onClickOPAC"
-                android:scaleType="fitCenter"
-                android:background="#e0dfeb"
-                android:layout_margin="12dp" />
+                android:scaleType="centerCrop"
+                android:src="@mipmap/opac"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/od"
-                android:src="@drawable/odxii"
-                android:onClick="onClickOD"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="#e0dfeb"
                 android:clickable="true"
-                android:background="#e0dfeb"
-                android:layout_toRightOf="@+id/opac"
-                android:layout_margin="12dp" />
+                android:onClick="onClickOD"
+                android:scaleType="fitXY"
+                android:src="@drawable/odxii"
+                app:layout_constraintBottom_toBottomOf="@+id/opac"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/opac" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/eb"
-                android:onClick="onClickEB"
-                android:src="@drawable/ebxii"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
                 android:background="#e0dfeb"
-                android:layout_below="@+id/opac"
-                android:layout_margin="12dp"
-                android:scaleType="fitCenter" />
+                android:onClick="onClickEB"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ebxii"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/opac" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/ir"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:adjustViewBounds="false"
+                android:background="#e0dfeb"
+                android:cropToPadding="false"
                 android:onClick="onClickIR"
+                android:scaleType="fitXY"
                 android:src="@drawable/irxii"
-                android:layout_alignLeft="@+id/od"
-                android:layout_alignTop="@+id/eb"
-                android:layout_alignRight="@+id/od"
-                android:scaleType="fitCenter"
-                android:background="#e0dfeb" />
+                app:layout_constraintBottom_toBottomOf="@+id/eb"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/eb" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
 
     </RelativeLayout>

@@ -14,8 +14,10 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:id="@+id/nav_toolbar" app:logo="@mipmap/libs"
+            android:id="@+id/nav_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:logo="@mipmap/libs"
             android:background="@color/colorPrimaryDark"
             android:minHeight="?attr/actionBarSize"
             android:fitsSystemWindows="true"
@@ -23,73 +25,95 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/progressBarService"
-            android:visibility="gone"
-            android:layout_centerHorizontal="true"
-            android:progressTint="@color/colorPrimaryDark"
-            android:progressTintMode="src_in"
-            android:indeterminate="false"
-            tools:targetApi="lollipop" />
 
-
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/libricons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#e0dfeb"
             android:layout_below="@+id/nav_toolbar"
-            android:id="@+id/libricons"
-            android:layout_margin="12dp">
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="#e0dfeb"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBarService"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="50dp"
+                android:indeterminate="false"
+                android:progressTint="@color/colorPrimaryDark"
+                android:progressTintMode="src_in"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgbt_service4"
+                tools:targetApi="lollipop" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/imgbt_info"
-                android:src="@mipmap/cwl"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:background="#e0dfeb"
                 android:onClick="onClickConnWL"
-                android:background="#e0dfeb"
-                android:layout_margin="12dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@mipmap/cwl"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/imgbt_news"
-                android:src="@mipmap/dn"
-                android:onClick="onClickDNews"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="#e0dfeb"
                 android:clickable="true"
-                android:background="#e0dfeb"
+                android:onClick="onClickDNews"
                 android:scaleType="centerCrop"
-                android:layout_margin="12dp"
-                android:layout_toRightOf="@+id/imgbt_info" />
+                android:src="@mipmap/dn"
+                app:layout_constraintBottom_toBottomOf="@+id/imgbt_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imgbt_info" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/imgbt_service4"
-                android:onClick="onClickLF"
-                android:src="@mipmap/lf"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
                 android:background="#e0dfeb"
-                android:layout_below="@+id/imgbt_info"
+                android:onClick="onClickLF"
                 android:scaleType="centerCrop"
-                android:layout_margin="12dp" />
+                android:src="@mipmap/lf"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgbt_info" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/imgbt_service5"
-                android:onClick="onClickIBB"
-                android:src="@mipmap/ibb"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
                 android:background="#e0dfeb"
-                android:layout_alignTop="@+id/imgbt_service4"
-                android:layout_alignRight="@+id/imgbt_news"
-                android:layout_alignLeft="@+id/imgbt_news"
-                android:scaleType="centerCrop" />
-        </RelativeLayout>
+                android:onClick="onClickIBB"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ibb"
+                app:layout_constraintBottom_toBottomOf="@+id/imgbt_service4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imgbt_service4" />
+        </android.support.constraint.ConstraintLayout>
 
 
     </RelativeLayout>
