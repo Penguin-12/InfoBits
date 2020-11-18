@@ -1,84 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="5dp"
-    android:background="#e0dfeb">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
 
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/startDatePicker"
-        android:spinnersShown="true"
-        android:datePickerMode="spinner"
-        android:calendarViewShown="false"
-        android:layout_alignTop="@+id/startDateText"
-        android:layout_toRightOf="@+id/startDateText"
-        android:background="#fff"
-        android:yearListSelectorColor="@color/colorPrimaryDark"
-        android:layoutMode="clipBounds"
-        android:calendarTextColor="@color/colorPrimaryDark" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="From"
-        android:id="@+id/startDateText"
-        android:textColor="#211d70"
-        android:layout_alignParentTop="true"
-        android:textSize="15sp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="To"
-        android:id="@+id/endDateText"
-        android:textColor="#211d70"
-        android:layout_below="@+id/startDatePicker"
-        android:layout_alignLeft="@+id/startDateText"
-        android:textSize="15sp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp" />
-
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/endDatePicker"
-        android:spinnersShown="true"
-        android:datePickerMode="spinner"
-        android:calendarViewShown="false"
-        android:layout_toRightOf="@+id/startDateText"
-        android:layout_alignTop="@+id/endDateText"
-        android:background="#fff" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/keywords"
-        android:hint="Keywords"
-        android:textSize="15sp"
-        android:textColor="#211d70"
-        android:background="#fff"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e0dfeb"
         android:padding="5dp"
-        android:layout_below="@+id/endDatePicker"
-        android:layout_toRightOf="@+id/startDateText"
-        android:layout_alignRight="@+id/startDatePicker"
-        android:layout_marginTop="6dp" />
+        android:paddingTop="10dp">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SEARCH"
-        android:id="@+id/searchNews"
-        android:background="@color/colorPrimary"
-        android:padding="10dp"
-        android:onClick="getSearchNews"
-        android:layout_alignRight="@+id/keywords"
-        android:layout_below="@+id/keywords"
-        android:layout_marginTop="5dp" />
+        <DatePicker
+            android:id="@+id/startDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/startDateText"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_toRightOf="@+id/startDateText"
+            android:background="#fff"
+            android:calendarTextColor="@color/colorPrimaryDark"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            android:layoutMode="clipBounds"
+            android:spinnersShown="true"
+            android:yearListSelectorColor="@color/colorPrimaryDark" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/startDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:text="From"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#211d70"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/endDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/startDatePicker"
+            android:layout_alignLeft="@+id/startDateText"
+            android:layout_marginRight="6dp"
+            android:paddingTop="10dp"
+            android:text="To"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#211d70"
+            android:textSize="15sp" />
+
+        <DatePicker
+            android:id="@+id/endDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/endDateText"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toRightOf="@+id/startDateText"
+            android:background="#fff"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            android:spinnersShown="true" />
+
+        <EditText
+            android:id="@+id/keywords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/endDatePicker"
+            android:layout_alignRight="@+id/startDatePicker"
+            android:layout_marginTop="6dp"
+            android:layout_toRightOf="@+id/startDateText"
+            android:background="#fff"
+            android:hint="Keywords"
+            android:padding="5dp"
+            android:textColor="#211d70"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/searchNews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/keywords"
+            android:layout_alignRight="@+id/keywords"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/roundedbutton"
+            android:onClick="getSearchNews"
+            android:padding="10dp"
+            android:text="SEARCH"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

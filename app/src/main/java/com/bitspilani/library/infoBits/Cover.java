@@ -52,61 +52,116 @@ public class Cover extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cover);
         spinner = (ProgressBar) findViewById(R.id.progressBar);
-       // dbhandler = new DBHandler(this,null,null);
-       // internal = dbhandler.selectData(2,"1 ORDER BY id ASC");
+        // dbhandler = new DBHandler(this,null,null);
+        // internal = dbhandler.selectData(2,"1 ORDER BY id ASC");
         dir = getFilesDir();
-        dbhandler = new DBHandler(this,null,null);
-        internal = dbhandler.selectData(2,"1 ORDER BY id ASC");
-            updateNotice();
+        dbhandler = new DBHandler(this, null, null);
+        internal = dbhandler.selectData(2, "1 ORDER BY id ASC");
+        updateNotice();
         //launchHome();
     }
 
-    private class APICall extends AsyncTask<String,Integer,String> {
-
-        String err;
-        String type;
-        @Override
-        protected String doInBackground(String[] params){
-            String urlString= params[0];
-            StringBuilder responseStrBuilder = new StringBuilder();
-            String inputStr;
-            type = "image";
-            if(params[0].contains("daily_news")){
-                type = "daily_news";
-            }
-            try {
-                URL url = new URL(urlString);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                BufferedReader streamReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-                while ((inputStr = streamReader.readLine()) != null)
-                    responseStrBuilder.append(inputStr);
-            } catch (Exception e ) {
-                err = "Network Error! Ensure you're connected to BITS Intranet";
-            }
-            return responseStrBuilder.toString();
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (connMgr != null) {
+            networkInfo = connMgr.getActiveNetworkInfo();
         }
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(Cover.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            launchHome();
+            return false;
+        }
+    }
 
-        @Override
-        protected void onPostExecute(String result) {
-            if(!result.isEmpty()) {
-                try {
-                    JSONObject json = new JSONObject(result);
-                    updateImageData(json, type);
-                    launchHome();
-                } catch (Exception e) {
-                    Toast.makeText(Cover.this,e.getMessage(),Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                    launchHome();
-                }
-            }
-            else{
-                if(!err.isEmpty()){
-                    if(type.equals("image")){
-                        Toast.makeText(Cover.this, err, Toast.LENGTH_LONG).show();
+    public void updateImageData(JSONObject json, String type) {
+        try {
+            if (!json.get("data").toString().equals("[]")) {
+                JSONObject data = (JSONObject) json.get("data");
+                if (type.equals("daily_news")) {
+                    Iterator<String> iter = data.keys();
+                    while (iter.hasNext()) {
+                        String key = iter.next();
+                        JSONObject dataval = (JSONObject) data.get(key);
+                        JSONObject check = dbhandler.selectData(1, "id = " + key);
+                        if (!check.has(key)) {
+                            String[] addvalues = {key, dataval.get("news_type").toString(), dataval.get("title").toString(), dataval.get("url").toString(), dataval.get("date").toString(), dataval.get("added_by").toString(), dataval.get("newspaper").toString(), dataval.get("keywords").toString(), dataval.get("pages").toString()};
+                            dbhandler.addData(1, addvalues);
+                        }
+                    }
+                } else {
+                    JSONObject botw = dbhandler.selectData(3, "1");
+                    Iterator<String> botwiter = botw.keys();
+                    Iterator<String> iter = data.keys();
+                    Iterator<String> intiter = internal.keys();
+                    String intkey, botwkey;
+                    while (intiter.hasNext()) {
+                        intkey = intiter.next();
+                        JSONObject intval = (JSONObject) internal.get(intkey);
+                        if (!data.has(intkey)) {
+                            File file = new File(dir, intval.get("image").toString());
+                            if (file.delete()) {
+                                dbhandler.deleteData(2, Integer.parseInt(intkey));
+                                internal.remove(intkey);
+                            }
+                        }
+                    }
+                    while (botwiter.hasNext()) {
+                        botwkey = botwiter.next();
+                        JSONObject botwval = (JSONObject) botw.get(botwkey);
+                        if (data.has("botw")) {
+                            JSONObject bo = (JSONObject) data.get("botw");
+                            if (!bo.get("title").toString().equals(botwval.get("title").toString()) || !bo.get("author").toString().equals(botwval.get("author").toString())) {
+                                File file = new File(dir, botwval.get("image").toString());
+                                if (file.delete()) {
+                                    dbhandler.deleteData(3, Integer.parseInt(botwkey));
+                                }
+                            }
+                        }
+                    }
+                    int loader = 0;
+                    while (iter.hasNext()) {
+                        String key = iter.next();
+                        JSONObject dataval = (JSONObject) data.get(key);
+                        if (dataval.get("type").toString().equals("botw")) {
+                            botw = dbhandler.selectData(3, "1");
+                            if (botw.length() == 0) {
+                                try {
+                                    new LoadImage().execute(imageApiURL + "book_of_the_month/" + dataval.get("image").toString(), dataval.get("type").toString() + "-" + String.valueOf(data.length()) + "%" + dataval.get("author").toString() + "|" + dataval.get("title").toString()).get(15000, TimeUnit.MILLISECONDS);
+                                    loader++;
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (TimeoutException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            if (!internal.has(key)) {
+                                try {
+                                    new LoadImage().execute(imageApiURL + "notices/images/" + dataval.get("image").toString(), dataval.get("type").toString() + "-" + String.valueOf(data.length()) + "%" + key + "|" + dataval.get("link").toString()).get(15000, TimeUnit.MILLISECONDS);
+                                    loader++;
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (TimeoutException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                    if (loader == 0) {
                         launchHome();
                     }
                 }
             }
+        } catch (JSONException e) {
+            Toast.makeText(Cover.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 
@@ -115,6 +170,7 @@ public class Cover extends AppCompatActivity {
         Bitmap bitmap;
         String filename, link, key, type;
         Integer tot;
+
         protected Bitmap doInBackground(String[] args) {
             try {
                 bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
@@ -157,128 +213,71 @@ public class Cover extends AppCompatActivity {
                     updateImage(filename, link, key, type);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(imgs == tot){
+            if (imgs == tot) {
                 imgs = 0;
                 launchHome();
             }
         }
     }
 
-    public boolean isConnected() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = null;
-        if (connMgr != null) {
-            networkInfo = connMgr.getActiveNetworkInfo();
-        }
-        if(networkInfo != null && networkInfo.isConnected()){
-            return true;
-        }else{
-            Toast.makeText(Cover.this, "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
-            launchHome();
-            return false;
-        }
-    }
+    private class APICall extends AsyncTask<String, Integer, String> {
 
-    public void updateImageData(JSONObject json, String type){
-        try {
-            if(!json.get("data").toString().equals("[]")){
-                JSONObject data = (JSONObject) json.get("data");
-                if(type.equals("daily_news")){
-                    Iterator<String> iter = data.keys();
-                    while(iter.hasNext()) {
-                        String key = iter.next();
-                        JSONObject dataval = (JSONObject) data.get(key);
-                        JSONObject check = dbhandler.selectData(1, "id = " + key);
-                        if (!check.has(key)) {
-                            String[] addvalues = {key, dataval.get("news_type").toString(), dataval.get("title").toString(), dataval.get("url").toString(), dataval.get("date").toString(), dataval.get("added_by").toString(), dataval.get("newspaper").toString(), dataval.get("keywords").toString(), dataval.get("pages").toString()};
-                            dbhandler.addData(1, addvalues);
-                        }
-                    }
+        String err;
+        String type;
+
+        @Override
+        protected String doInBackground(String[] params) {
+            String urlString = params[0];
+            StringBuilder responseStrBuilder = new StringBuilder();
+            String inputStr;
+            type = "image";
+            if (params[0].contains("daily_news")) {
+                type = "daily_news";
+            }
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader streamReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+                while ((inputStr = streamReader.readLine()) != null)
+                    responseStrBuilder.append(inputStr);
+            } catch (Exception e) {
+                err = "Network Error! Ensure you're connected to Internet";
+            }
+            return responseStrBuilder.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (!result.isEmpty()) {
+                try {
+                    JSONObject json = new JSONObject(result);
+                    updateImageData(json, type);
+                    launchHome();
+                } catch (Exception e) {
+                    Toast.makeText(Cover.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    launchHome();
                 }
-                else{
-                    JSONObject botw = dbhandler.selectData(3, "1");
-                    Iterator<String> botwiter = botw.keys();
-                    Iterator<String> iter = data.keys();
-                    Iterator<String> intiter = internal.keys();
-                    String intkey, botwkey;
-                    while(intiter.hasNext()){
-                        intkey = intiter.next();
-                        JSONObject intval = (JSONObject) internal.get(intkey);
-                        if(!data.has(intkey)){
-                            File file = new File(dir, intval.get("image").toString());
-                            if(file.delete()) {
-                                dbhandler.deleteData(2, Integer.parseInt(intkey));
-                                internal.remove(intkey);
-                            }
-                        }
-                    }
-                    while(botwiter.hasNext()){
-                        botwkey = botwiter.next();
-                        JSONObject botwval = (JSONObject) botw.get(botwkey);
-                        if(data.has("botw")){
-                            JSONObject bo = (JSONObject) data.get("botw");
-                            if(!bo.get("title").toString().equals(botwval.get("title").toString()) || !bo.get("author").toString().equals(botwval.get("author").toString())) {
-                                File file = new File(dir, botwval.get("image").toString());
-                                if (file.delete()) {
-                                    dbhandler.deleteData(3, Integer.parseInt(botwkey));
-                                }
-                            }
-                        }
-                    }
-                    int loader = 0;
-                    while(iter.hasNext()){
-                        String key = iter.next();
-                        JSONObject dataval = (JSONObject) data.get(key);
-                        if(dataval.get("type").toString().equals("botw")){
-                            botw = dbhandler.selectData(3, "1");
-                            if(botw.length() == 0) {
-                                try {
-                                    new LoadImage().execute(imageApiURL + "book_of_the_month/" + dataval.get("image").toString(), dataval.get("type").toString() + "-" + String.valueOf(data.length()) + "%" + dataval.get("author").toString() + "|" + dataval.get("title").toString()).get(15000,TimeUnit.MILLISECONDS);
-                                    loader++;
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
-                                } catch (TimeoutException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        else {
-                            if (!internal.has(key)) {
-                                try {
-                                    new LoadImage().execute(imageApiURL + "notices/images/" + dataval.get("image").toString(), dataval.get("type").toString() + "-" + String.valueOf(data.length()) + "%" + key + "|" + dataval.get("link").toString()).get(15000, TimeUnit.MILLISECONDS);
-                                    loader++;
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
-                                } catch (TimeoutException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }
-                    if(loader == 0){
+            } else {
+                if (!err.isEmpty()) {
+                    if (type.equals("image")) {
+                        Toast.makeText(Cover.this, err, Toast.LENGTH_LONG).show();
                         launchHome();
                     }
                 }
             }
-        } catch (JSONException e) {
-            Toast.makeText(Cover.this,e.getMessage(),Toast.LENGTH_LONG).show();
-            e.printStackTrace();
         }
     }
 
     public void updateImage(String filename, String link, String key, String type) throws UnsupportedEncodingException {
         File file = new File(dir, filename);
-        if(file.exists()){
-            if(type.equals("botw")){
-                String[] addvalues = {key, link.substring(0,link.indexOf("---")), link.substring(link.indexOf("---") + 3), filename};
+        if (file.exists()) {
+            if (type.equals("botw")) {
+                String[] addvalues = {key, link.substring(0, link.indexOf("---")), link.substring(link.indexOf("---") + 3), filename};
                 dbhandler.addData(3, addvalues);
                 //Toast.makeText(this, key + " " + link + " " + type + " " + filename, Toast.LENGTH_LONG).show();
             }

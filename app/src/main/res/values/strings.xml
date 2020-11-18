@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Library</string>
-    <string name="homepage">InfoBITS</string>
+    <string name="app_name">InfoBITS</string>
+    <string name="homepage"> InfoBITS</string>
     <string name="libres">Library Resources</string>
     <string name="libservice">Library Services</string>
     <string name="Username">Username</string>
@@ -36,7 +36,7 @@
     <string name="title_infoBits">Info Bits Bulletin</string>
     <string name="intech">Intech</string>
     <string name="openaccess">openAccess</string>
-    <string name="menu_user_account">Account</string>
+    <string name="menu_user_account">Profile</string>
     <string name="menu_user_logout">Log Out</string>
     <string name="drawer_menu_home">Home</string>
     <string name="drawer_menu_os">One Search</string>

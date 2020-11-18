@@ -27,20 +27,22 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.bitspilani.library.infoBits.Responses.NewsResponse;
-import com.bitspilani.library.infoBits.network.VolleySingleton;
-import com.bitspilani.library.infoBits.R;
 import com.bitspilani.library.infoBits.Responses.BulletinResponse;
+import com.bitspilani.library.infoBits.Responses.NewsResponse;
 import com.bitspilani.library.infoBits.Responses.Subject;
+import com.bitspilani.library.infoBits.network.VolleySingleton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -78,6 +80,12 @@ public class infoBitsBulletin extends homepage {
         setContentView(R.layout.activity_infobitsbulletin);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         mIssue = (TextView) findViewById(R.id.issue);
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -111,7 +119,7 @@ public class infoBitsBulletin extends homepage {
                 if (isConnected()) {
                     serverCalls();
                 } else {
-                    alertShow("Connect to intranet and try again", "Not Connected to Intranet");
+                    alertShow("Connect to internet and try again", "Not Connected to Internet");
                 }
             }
         } catch (Exception e) {
@@ -122,7 +130,7 @@ public class infoBitsBulletin extends homepage {
             listView.setVisibility(View.INVISIBLE);
             mMessage.setVisibility(View.VISIBLE);
             mMessage.setText(R.string.no_news_today);
-            alertShow("Connect to intranet and try again", "Not Connected to Intranet");
+            alertShow("Connect to internet and try again", "Not Connected to Internet");
         }
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         File profilepic = new File(dir, avatar);

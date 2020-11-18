@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -52,6 +53,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -59,6 +61,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 public class homepage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -69,13 +73,26 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
     DrawerLayout drawerlayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     DBHandler dbhandler;
+    final Handler handler = new Handler();
+    Timer timer;
+    int clickedItem = 0;
+    Boolean doubleBackToExitPressedOnce = false;
+    int currentPage = 0;
     JSONObject internal;
     private ProgressBar resPBar;
     Button reserveB;
- //   ArrayList<RadioButton> pagination = new ArrayList<>();
- ArrayList<String> urls = new ArrayList<>();
+    final Runnable update = new Runnable() {
+
+        public void run() {
+            if (currentPage == adapter.getCount()) {
+                currentPage = 0;
+            }
+            viewPager.setCurrentItem(currentPage++, true);
+        }
+    };
+    //   ArrayList<RadioButton> pagination = new ArrayList<>();
+    ArrayList<String> urls = new ArrayList<>();
     ArrayList<Bitmap> images = new ArrayList<>();
-    MenuItem cat;
     // RadioGroup pagin;
     SharedPreferences login_info;
     SharedPreferences.Editor edit_login_info;
@@ -89,6 +106,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
 //    public final static String imageApiURL = "http://192.168.43.71:80/infoBITS/uploads/";
     File dir;
     private GoogleApiClient client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,21 +137,61 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         toolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         drawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
+
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         dir = getFilesDir();
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         drawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                boolean connectWithLibrary = false;
+                super.onDrawerClosed(drawerView);
+                if (clickedItem != 0) {
+                    Intent i = null;
+                    if (clickedItem == R.id.os_id) {
+                        i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://search.ebscohost.com/Community.aspx"));
+                    } else if (clickedItem == R.id.comm_id) {
+                        if (!isConnected()) connectWithLibrary = true;
+                        i = new Intent(homepage.this, ConnectWithLibrary.class);
+                    } else if (clickedItem == R.id.news_id) {
+                        i = new Intent(homepage.this, DailyNews.class);
+                    } else if (clickedItem == R.id.ibb_id) {
+                        i = new Intent(homepage.this, infoBitsBulletin.class);
+                    } else if (clickedItem == R.id.lf_id) {
+                        i = new Intent(homepage.this, lfmsAllItems.class);
+                    } /*else if (id == R.id.qp_id) {
+            Intent qpI = new Intent(homepage.this, downloadable_links.class);
+            qpI.putExtra("title", "Question Papers");
+            qpI.putExtra("reference", "Question Papers");
+            startActivity(qpI);
+        }*/ else if (clickedItem == R.id.eb_id) {
+                        i = new Intent(homepage.this, ebooks.class);
+                    } else if (clickedItem == R.id.od_id) {
+                        i = new Intent(homepage.this, OnlineDb.class);
+                    } else if (clickedItem == R.id.opac_id) {
+                        i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://libcatalog.bits-pilani.ac.in/"));
+                    }
+                    if (connectWithLibrary) {
+                        Toast.makeText(homepage.this, "You need internet to access this feature", Toast.LENGTH_SHORT).show();
+                        connectWithLibrary = false;
+                        spinner.setVisibility(View.INVISIBLE);
+                    } else startActivity(i);
+                }
+            }
+        };
+
         drawerlayout.setDrawerListener(actionBarDrawerToggle);
         drawerlayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
-        cat = navigationView.getMenu().getItem(0);
-        cat.setChecked(true);
+
         navigationView.setItemIconTintList(null);
         View navHeader = navigationView.getHeaderView(0);
-        if(navHeader.findViewById(R.id.brand) != null) {
+        if (navHeader.findViewById(R.id.brand) != null) {
             if (user.isEmpty()) {
                 ((TextView) navHeader.findViewById(R.id.brand)).setText(R.string.guest_user);
                 ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.mipmap.logo);
@@ -159,13 +217,48 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         internal = dbhandler.selectData(2, "1 ORDER BY id ASC");
         if (viewPager.getAdapter() == null)
             getNotices();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (adapter.getCount() != 0) {
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
+
+                        @Override
+                        public void run() {
+                            handler.post(update);
+                        }
+                    }, 1000, 5000);
+                }
+            }
+        }, 4000);
+
+
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-         spinner.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -190,11 +283,13 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         Intent i = null;
         switch (item.getItemId()) {
             case R.id.user:
+                spinner.setVisibility(View.VISIBLE);
                 i = new Intent(homepage.this, user_settings.class);
                 i.putExtra("previous", this.getClass());
                 startActivityForResult(i, 0);
                 break;
             case R.id.login:
+                spinner.setVisibility(View.VISIBLE);
                 i = new Intent(getApplicationContext(), login.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
@@ -203,13 +298,13 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
 //                Intent i13 = new Intent(homepage.this, signup.class);
 //                startActivity(i13);
 //                break;
-            case R.id.logout:
-                edit_login_info.clear();
-                edit_login_info.apply();
-                i = new Intent(getApplicationContext(), homepage.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                break;
+//            case R.id.logout:
+//                edit_login_info.clear();
+//                edit_login_info.apply();
+//                i = new Intent(getApplicationContext(), homepage.class);
+//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(i);
+//                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -222,30 +317,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         if (user.isEmpty()) {
             LogInToast();
         } else {
-            Intent i = null;
-            if (id == R.id.os_id) {
-                i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://search.ebscohost.com/Community.aspx"));
-            } else if (id == R.id.comm_id) {
-                i = new Intent(homepage.this, ConnectWithLibrary.class);
-            } else if (id == R.id.news_id) {
-                i = new Intent(homepage.this, DailyNews.class);
-            } else if (id == R.id.ibb_id) {
-                i = new Intent(homepage.this, infoBitsBulletin.class);
-            } else if (id == R.id.lf_id) {
-                i = new Intent(homepage.this, lfmsAllItems.class);
-            } /*else if (id == R.id.qp_id) {
-            Intent qpI = new Intent(homepage.this, downloadable_links.class);
-            qpI.putExtra("title", "Question Papers");
-            qpI.putExtra("reference", "Question Papers");
-            startActivity(qpI);
-        }*/ else if (id == R.id.eb_id) {
-                i = new Intent(homepage.this, ebooks.class);
-            } else if (id == R.id.od_id) {
-                i = new Intent(homepage.this, OnlineDb.class);
-            } else if (id == R.id.opac_id) {
-                i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://libcatalog.bits-pilani.ac.in/"));
-            }
-            startActivity(i);
+            spinner.setVisibility(View.VISIBLE);
+            clickedItem = item.getItemId();
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -313,6 +387,21 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
             this.drawerlayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+//            if (doubleBackToExitPressedOnce) {
+//                super.onBackPressed();
+//                this.finishAffinity();
+//                return;
+//            }
+//
+//            this.doubleBackToExitPressedOnce = true;
+//            Toast.makeText(this, "Press BACK Again to Exit", Toast.LENGTH_SHORT).show();
+//
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    doubleBackToExitPressedOnce = false;
+//                }
+//            }, 2000);
         }
     }
 
@@ -328,7 +417,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         JSONObject botwjson;
         String[] botwarr = {"", "", ""}, news = {"", "", ""};
         internal = dbhandler.selectData(2, "1 ORDER BY id ASC");
-      //  Log.d("myTest","INTERNAL: "+internal.toString());
+        //  Log.d("myTest","INTERNAL: "+internal.toString());
         Iterator iter = internal.keys();
         Iterator newsiter = newsjson.keys();
         File image;
@@ -396,13 +485,24 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         if (adapter.getCount() == 0) {
             findViewById(R.id.no_notice).setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.GONE);
-           // findViewById(R.id.pagination).setVisibility(View.GONE);
+            // findViewById(R.id.pagination).setVisibility(View.GONE);
         } else {
             findViewById(R.id.no_notice).setVisibility(View.GONE);
             viewPager.setAdapter(adapter);
             viewPager.setVisibility(View.VISIBLE);
-          //  pagin = (RadioGroup) findViewById(R.id.paginationGroup);
-           // pagin.clearCheck();
+            try {
+                Field mScroller;
+                mScroller = ViewPager.class.getDeclaredField("mScroller");
+                mScroller.setAccessible(true);
+                CustomScroller scroller = new CustomScroller(viewPager.getContext());
+                // scroller.setFixedDuration(5000);
+                mScroller.set(viewPager, scroller);
+            } catch (NoSuchFieldException e) {
+            } catch (IllegalArgumentException e) {
+            } catch (IllegalAccessException e) {
+            }
+            //  pagin = (RadioGroup) findViewById(R.id.paginationGroup);
+            // pagin.clearCheck();
             for (int i = 0; i < adapter.getCount(); i++) {
                 RadioButton rbtn = new RadioButton(this);
                 rbtn.setText("");
@@ -413,11 +513,11 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 */
                 rbtn.setChecked(false);
                 rbtn.setClickable(false);
-          //      pagin.addView(rbtn, i, pagin.getLayoutParams());
-           //     pagination.add(i, rbtn);
+                //      pagin.addView(rbtn, i, pagin.getLayoutParams());
+                //     pagination.add(i, rbtn);
             }
-         //   pagination.get(0).setChecked(true);
-        //    findViewById(R.id.pagination).setVisibility(View.VISIBLE);
+            //   pagination.get(0).setChecked(true);
+            //    findViewById(R.id.pagination).setVisibility(View.VISIBLE);
             viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -428,7 +528,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 public void onPageSelected(int position) {
                     super.onPageSelected(position);
 //                    pagin.clearCheck();
-  //                  pagination.get(position).setChecked(true);
+                    //                  pagination.get(position).setChecked(true);
                 }
             });
         }
@@ -453,7 +553,6 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     public void onStop() {
         super.onStop();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
@@ -464,6 +563,54 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(homepage.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+    public Integer[] getDimens() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        return new Integer[]{height, width};
+    }
+
+    public int getCorrectPixels(float dips) {
+        float scale = getResources().getDisplayMetrics().density;
+        int pixels = (int) ((int) dips * scale);
+        return pixels;
+    }
+
+    public void LogInToast() {
+        Toast.makeText(this, "Please Login to Access!", Toast.LENGTH_LONG).show();
+    }
+
+    public void setToolBarAvatar(File profilepic) {
+        Drawable d = Drawable.createFromPath(profilepic.getAbsolutePath());
+        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+        Integer h = bitmap.getHeight();
+        Integer w = bitmap.getWidth();
+        if (h > w) {
+            w = w * 150 / h;
+            h = 150;
+        } else if (h < w) {
+            h = h * 150 / w;
+            w = 150;
+        } else {
+            h = w = 150;
+        }
+        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
+        toolbar.setOverflowIcon(dr);
     }
 
     public class Swipe_Adapter extends PagerAdapter {
@@ -572,7 +719,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                                             resPBar.setVisibility(View.VISIBLE);
                                             reserveB.setClickable(false);
                                         } else {
-                                            Toast.makeText(homepage.this, "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(homepage.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
                                         }
                                     } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
@@ -617,7 +764,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                                             resPBar.setVisibility(View.VISIBLE);
                                             reserveB.setClickable(false);
                                         } else {
-                                            Toast.makeText(homepage.this, "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(homepage.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
                                         }
                                     } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
@@ -655,9 +802,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                                     /*
                                     * Intent browserIntent = new Intent(LibRes.this,LoadBooks.class).putExtra("url","http://eprints.bits-pilani.ac.in/");
                                         startActivity(browserIntent);*/
-                                    Log.d("myTest",url.toString());
+                                    Log.d("myTest", url.toString());
                                     Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
-                                   // startActivity(browserIntent);
+                                    // startActivity(browserIntent);
                                 }
                             }
                         });
@@ -692,7 +839,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
             } catch (Exception e) {
-                err = "Network Error! Ensure you're connected to BITS Intranet";
+                err = "Network Error! Ensure you're connected to Internet";
             }
             return responseStrBuilder.toString();
         }
@@ -721,56 +868,6 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 }
             }
         }
-    }
-
-    public boolean isConnected() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            Toast.makeText(homepage.this, "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-    }
-
-    public void LogInToast() {
-        Toast.makeText(this, "Please Login to Access!", Toast.LENGTH_LONG).show();
-    }
-
-    public Integer[] getDimens(){
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-        return new Integer[]{height, width};
-    }
-
-    public int getCorrectPixels(float dips){
-        float scale = getResources().getDisplayMetrics().density;
-        int pixels = (int) ((int) dips * scale);
-        return pixels;
-    }
-
-    public void setToolBarAvatar(File profilepic){
-        Drawable d = Drawable.createFromPath(profilepic.getAbsolutePath());
-        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-        Integer h = bitmap.getHeight();
-        Integer w = bitmap.getWidth();
-        if(h > w){
-            w = w * 150/h;
-            h = 150;
-        }
-        else if(h < w){
-            h = h * 150/w;
-            w = 150;
-        }
-        else{
-            h = w = 150;
-        }
-        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
-        toolbar.setOverflowIcon(dr);
     }
 
 

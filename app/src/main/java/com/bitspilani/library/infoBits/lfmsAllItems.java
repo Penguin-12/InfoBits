@@ -1,11 +1,11 @@
 package com.bitspilani.library.infoBits;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitspilani.library.infoBits.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -50,22 +46,28 @@ public class lfmsAllItems extends homepage {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         spinner = (ProgressBar) findViewById(R.id.progressBarClaim);
         setSupportActionBar(toolbar);
-        File profilepic = new File(dir, avatar);
-        try {
-            fileInput = new FileInputStream(profilepic);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(fileInput != null){
-            setToolBarAvatar(profilepic);
-        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinner.setVisibility(View.VISIBLE);
+                finish();
+            }
+        });
+//        File profilepic = new File(dir, avatar);
+//        try {
+//            fileInput = new FileInputStream(profilepic);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if(fileInput != null){
+//            setToolBarAvatar(profilepic);
+//        }
         dbhandler = new DBHandler(this, null, null);
-        internal = dbhandler.selectData(4,"1 ORDER BY id DESC");
-        if(isConnected()){
+        internal = dbhandler.selectData(4, "1 ORDER BY id DESC");
+        if (isConnected()) {
             urlString = apiURL + actString + ".php?username=" + username + "&password=" + password;
             new APICall().execute(urlString);
-        }
-        else{
+        } else {
             setList(internal);
         }
     }
@@ -103,7 +105,7 @@ public class lfmsAllItems extends homepage {
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
             } catch (Exception e ) {
-                err = "Network Error! Ensure you're connected to BITS Intranet";
+                err = "Network Error! Ensure you're connected to Internet";
             }
             return responseStrBuilder.toString();
         }
@@ -203,11 +205,6 @@ public class lfmsAllItems extends homepage {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        recreate();
-    }
 
     public class MyAdapter extends ArrayAdapter<HashMap<String, String>> {
 
@@ -243,7 +240,7 @@ public class lfmsAllItems extends homepage {
                             spinner.setVisibility(View.VISIBLE);
                             Intent in = new Intent(getApplicationContext(), Claim.class);
                             in.putExtra("sno", i.get("sno").toString());
-                            startActivityForResult(in, 100);
+                            startActivity(in);
                         }
                     });
                 }

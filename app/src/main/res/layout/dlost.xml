@@ -1,258 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout14"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#fff">
 
-    <android.support.design.widget.AppBarLayout android:id="@+id/app_bar"
-        android:fitsSystemWindows="true" android:layout_height="@dimen/app_bar_height"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
-        android:title="I Just Read This Book!"
-        android:baselineAligned="false"
-        android:background="@color/colorPrimaryDark">
-
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-            android:layout_height="?attr/actionBarSize" android:layout_width="match_parent"
-            app:layout_collapseMode="pin" app:logo="@mipmap/cwl"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:indeterminate="false" android:textColor="#fff" />
-    </android.support.design.widget.AppBarLayout>
-
-    <RelativeLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:background="#ddd"
-        android:layout_below="@+id/app_bar"
-        android:layout_margin="10dp"
-        android:id="@+id/CommForm">
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Please fill in the details:"
-            android:id="@+id/header"
-            android:layout_gravity="left"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="15dp"
-            android:textSize="20sp"
-            android:textColor="@color/colorPrimaryDark" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/newConv"
-            app:layout_anchorGravity="bottom|end" android:src="@android:drawable/ic_menu_send"
-            android:clickable="true"
-            android:onClick="newConv"
-            app:backgroundTint="@color/colorPrimaryDark"
-            android:translationZ="10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/fab_margin" />
-
-        <RadioGroup
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/header"
-            android:id="@+id/documentLost"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Journals"
-                android:id="@+id/radioJ"
-                android:checked="true"
-                android:layout_alignTop="@+id/radioCompliment"
-                android:layout_toRightOf="@+id/radioCompliment"
-                android:layout_toEndOf="@+id/radioCompliment"
-                android:textSize="20sp"
-                android:buttonTint="#211d70"
-               />
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Books"
-                android:id="@+id/radioB"
-                android:checked="false"
-                android:layout_alignTop="@+id/radioCompliment"
-                android:layout_toLeftOf="@+id/newConv"
-                android:layout_toStartOf="@+id/newConv"
-                android:textSize="20sp"
-                android:layout_marginLeft="25dp"
-                android:buttonTint="#211d70" />
-
-        </RadioGroup>
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/dlostlayout"
-            android:layout_below="@+id/documentLost">
+            android:layout_height="match_parent">
 
             <RelativeLayout
-                android:orientation="vertical"
+                android:id="@+id/CommForm"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#ddd"
-                android:id="@+id/journalLayout"
-                android:layout_alignParentLeft="false"
-                android:padding="10dp"
-                android:visibility="visible">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/app_bar"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/container_background"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="10dp"
+                tools:layout_editor_absoluteY="10dp">
 
                 <TextView
+                    android:id="@+id/header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="left"
+                    android:layout_margin="15dp"
+                    android:text="Please fill in the details:"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Month\n&amp; Year"
-                    android:id="@+id/monthYearText"
-                    android:textSize="20sp"
-                    android:textAlignment="gravity"
-                    android:layout_centerVertical="true"
-                    android:layout_alignLeft="@+id/journalText"
-                    android:layout_alignStart="@+id/journalText"
-                    android:layout_alignTop="@+id/monthYear" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp" />
 
-                <TextView
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/newConv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Journal"
-                    android:id="@+id/journalText"
-                    android:textSize="20sp"
-                    android:textAlignment="gravity"
-                    android:layout_alignTop="@+id/journal"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:clickable="true"
+                    android:onClick="newConv"
+                    android:src="@android:drawable/ic_menu_send"
+                    android:translationZ="10dp"
+                    app:backgroundTint="@color/colorPrimaryDark"
+                    app:layout_anchorGravity="bottom|end" />
 
-                <EditText
+                <RadioGroup
+                    android:id="@+id/documentLost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/journal"
-                    android:layout_gravity="right"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="#fff"
-                    android:padding="5dp"
-                    android:textSize="20sp"
-                    android:layout_toRightOf="@+id/journalText"
-                    android:layout_margin="10dp" />
-
-                <DatePicker
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/monthYear"
-                    android:layout_below="@+id/journal"
-                    android:layout_toRightOf="@+id/journalText"
+                    android:layout_below="@+id/header"
                     android:layout_margin="10dp"
-                    android:calendarViewShown="false"
-                    android:datePickerMode="spinner"
-                    android:calendarTextColor="#211d70"
-                    android:spinnersShown="true"
-                    android:background="#fff" />
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioJ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/radioCompliment"
+                        android:layout_toEndOf="@+id/radioCompliment"
+                        android:layout_toRightOf="@+id/radioCompliment"
+                        android:buttonTint="#211d70"
+                        android:checked="true"
+                        android:text="Journals"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/radioB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/radioCompliment"
+                        android:layout_marginLeft="25dp"
+                        android:layout_toStartOf="@+id/newConv"
+                        android:layout_toLeftOf="@+id/newConv"
+                        android:buttonTint="#211d70"
+                        android:checked="false"
+                        android:text="Books"
+                        android:textSize="20sp" />
+
+                </RadioGroup>
+
+                <RelativeLayout
+                    android:id="@+id/dlostlayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/documentLost">
+
+                    <RelativeLayout
+                        android:id="@+id/journalLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="false"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/monthYearText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@+id/journalText"
+                            android:layout_alignLeft="@+id/journalText"
+                            android:layout_alignTop="@+id/monthYear"
+                            android:layout_centerVertical="true"
+                            android:text="Month\n&amp; Year"
+                            android:textAlignment="gravity"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/journalText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/journal"
+                            android:layout_marginLeft="10dp"
+                            android:text="Journal"
+                            android:textAlignment="gravity"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/journal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_margin="10dp"
+                            android:layout_toRightOf="@+id/journalText"
+                            android:background="#fff"
+                            android:padding="5dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20sp" />
+
+                        <DatePicker
+                            android:id="@+id/monthYear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/journal"
+                            android:layout_margin="10dp"
+                            android:layout_toRightOf="@+id/journalText"
+                            android:background="#fff"
+                            android:calendarTextColor="#211d70"
+                            android:calendarViewShown="false"
+                            android:datePickerMode="spinner"
+                            android:spinnersShown="true" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/bookLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ddd"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_margin="10dp"
+                            android:layout_toRightOf="@+id/accnoText"
+                            android:background="#fff"
+                            android:padding="5dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/titleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/title"
+                            android:layout_margin="5dp"
+                            android:text="Title"
+                            android:textAlignment="gravity"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/authorText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/author"
+                            android:layout_margin="5dp"
+                            android:text="Author"
+                            android:textAlignment="gravity"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/author"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/title"
+                            android:layout_alignLeft="@+id/title"
+                            android:layout_alignRight="@+id/title"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="#fff"
+                            android:padding="5dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/accnoText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/accno"
+                            android:layout_margin="5dp"
+                            android:text="Accession\nNo."
+                            android:textAlignment="gravity"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/accno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/author"
+                            android:layout_alignLeft="@+id/author"
+                            android:layout_alignRight="@+id/author"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="1dp"
+                            android:background="#fff"
+                            android:padding="5dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="20sp" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
 
             </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
-            <RelativeLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#ddd"
-                android:padding="10dp"
-                android:id="@+id/bookLayout"
-                android:visibility="gone">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/title"
-                    android:layout_gravity="right"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="#fff"
-                    android:padding="5dp"
-                    android:textSize="20sp"
-                    android:layout_toRightOf="@+id/accnoText"
-                    android:layout_margin="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Title"
-                    android:id="@+id/titleText"
-                    android:textSize="20sp"
-                    android:textAlignment="gravity"
-                    android:layout_margin="5dp"
-                    android:layout_alignTop="@+id/title" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Author"
-                    android:id="@+id/authorText"
-                    android:textSize="20sp"
-                    android:textAlignment="gravity"
-                    android:layout_margin="5dp"
-                    android:layout_alignTop="@+id/author" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/author"
-                    android:layout_gravity="right"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="#fff"
-                    android:padding="5dp"
-                    android:textSize="20sp"
-                    android:layout_below="@+id/title"
-                    android:layout_alignRight="@+id/title"
-                    android:layout_alignLeft="@+id/title"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Accession\nNo."
-                    android:id="@+id/accnoText"
-                    android:textSize="20sp"
-                    android:textAlignment="gravity"
-                    android:layout_margin="5dp"
-                    android:layout_alignTop="@+id/accno" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/accno"
-                    android:layout_gravity="right"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="#fff"
-                    android:padding="5dp"
-                    android:textSize="20sp"
-                    android:layout_below="@+id/author"
-                    android:layout_alignLeft="@+id/author"
-                    android:layout_alignRight="@+id/author"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="1dp" />
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:indeterminate="false"
+        app:layout_collapseMode="pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout9"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:fitsSystemWindows="true"
-        android:layout_height="@dimen/app_bar_height"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:baselineAligned="false"
-        android:background="@color/colorPrimaryDark">
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:id="@+id/libricons"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_collapseMode="pin"
-            app:logo="@drawable/odm"
-            android:title="@string/title_activity_ebooks"
-            android:textColor="#fff"/>
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar"
+            android:background="#e0dfeb"
+            android:orientation="vertical">
 
-    </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+            <ListView
+                android:id="@+id/onlineDb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/colorPrimaryDark"
+                android:dividerHeight="2dp"></ListView>
+
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#e0dfeb"
-        android:layout_below="@+id/app_bar"
-        android:id="@+id/libricons"
-        android:layout_margin="10dp">
+        android:layout_height="?attr/actionBarSize"
+        android:title="@string/title_activity_ebooks"
+        app:layout_collapseMode="pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/onlineDb"
-            android:divider="@color/colorPrimaryDark"
-            android:dividerHeight="2dp">
-        </ListView>
-
-
-    </RelativeLayout>
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

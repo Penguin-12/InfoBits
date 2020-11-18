@@ -1,20 +1,13 @@
 package com.bitspilani.library.infoBits;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView;
-import android.view.View;
-import android.net.Uri;
-import android.content.Intent;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import com.bitspilani.library.infoBits.R;
 
 public class downloadable_links extends homepage implements  AdapterView.OnItemClickListener{
 
@@ -23,30 +16,37 @@ public class downloadable_links extends homepage implements  AdapterView.OnItemC
     private String[] links;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.downloadable_links);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String reference =bundle.getString("reference");
+        String reference = bundle.getString("reference");
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         //setSupportActionBar(toolbar1);
         toolbar.setTitle(reference);
-        File profilepic = new File(dir, avatar);
-        try {
-            fileInput = new FileInputStream(profilepic);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(fileInput != null){
-            setToolBarAvatar(profilepic);
-        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+//                spinner.setVisibility(View.VISIBLE);
+            }
+        });
+//        File profilepic = new File(dir, avatar);
+//        try {
+//            fileInput = new FileInputStream(profilepic);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if(fileInput != null){
+//            setToolBarAvatar(profilepic);
+//        }
         listView = (ListView) findViewById(R.id.listView);
-        switch (reference){
+        switch (reference) {
             case "Pearson e-Books":
                 values = new String[]{
-                       "Biology" ,
+                        "Biology",
                         "Chemistry",
                         "Computer Science",
                         "Electrical and Electronic Engineering",
@@ -54,12 +54,12 @@ public class downloadable_links extends homepage implements  AdapterView.OnItemC
                         "Management"
                 };
                 links = new String[]{
-                        "http://172.21.1.15/pdf/pearson_e-books/Biology.pdf",
-                        "http://172.21.1.15/pdf/pearson_e-books/Chemistry.pdf",
-                        "http://172.21.1.15/pdf/pearson_e-books/Computer_Science.pdf",
-                        "http://172.21.1.15/pdf/pearson_e-books/Electrical_and_Electronic_Engineering.pdf",
-                        "http://172.21.1.15/pdf/pearson_e-books/Humanities_and_Social_Sciences.pdf",
-                        "http://172.21.1.15/pdf/pearson_e-books/Management.pdf"
+                        "http://library.bits-pilani.ac.in/pdf/pearson_e-books/Biology.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/pearson_e-books/Chemistry.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/pearson_e-books/Computer_Science.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/pearson_e-books/Electrical_and_Electronic_Engineering.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/pearson_e-books/Humanities_and_Social_Sciences.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/pearson_e-books/Management.pdf"
                 };
                 break;
             case "Elsevier e-Books":
@@ -73,13 +73,13 @@ public class downloadable_links extends homepage implements  AdapterView.OnItemC
 
                 };
                 links = new String[]{
-                        "http://172.21.1.15/pdf/Elsevier_e-books/Chemical_Engineering.pdf",
-                        "http://172.21.1.15/pdf/Elsevier_e-books/Chemistry.pdf",
-                        "http://172.21.1.15/pdf/Elsevier_e-books/Mathematics.pdf",
-                        "http://172.21.1.15/pdf/Elsevier_e-books/Pharmacology.pdf",
-                        "http://172.21.1.15/pdf/Elsevier_e-books/CS-IS.pdf"
+                        "http://library.bits-pilani.ac.in/pdf/Elsevier_e-books/Chemical_Engineering.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/Elsevier_e-books/Chemistry.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/Elsevier_e-books/Mathematics.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/Elsevier_e-books/Pharmacology.pdf",
+                        "http://library.bits-pilani.ac.in/pdf/Elsevier_e-books/CS-IS.pdf"
                 };
-                toolbar.setLogo(R.mipmap.science_direct1);
+//                toolbar.setLogo(R.mipmap.science_direct1);
                 break;
             case "Question Papers":
                 values = new String[] {"CLICK HERE", "iPhone", "WindowsMobile",

@@ -1,23 +1,19 @@
 package com.bitspilani.library.infoBits;
 
-import android.os.Bundle;
-import org.json.JSONException;
-import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitspilani.library.infoBits.R;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -47,11 +43,17 @@ public class Claim extends lfmsAllItems {
         found = (TextView) findViewById(R.id.found);
         toolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         Bundle b = getIntent().getExtras();
         sno = b.get("sno").toString();
         dbhandler = new DBHandler(this, null, null);
         try {
-            details = ((JSONObject) dbhandler.selectData(4,"id = " + sno).get(sno));
+            details = ((JSONObject) dbhandler.selectData(4, "id = " + sno).get(sno));
             particulars.setText("Particulars: " + details.get("particulars").toString() + "\n\nBrand: " + details.get("brand").toString());
             String found_at = details.get("date").toString() + " " + details.get("time").toString();
             try {
@@ -66,20 +68,20 @@ public class Claim extends lfmsAllItems {
         claim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if(isConnected()){
+                if (isConnected()) {
                     new SaveItemDetails().execute(url_update_item + sno);
                 }
             }
         });
-        File profilepic = new File(dir, avatar);
-        try {
-            fileInput = new FileInputStream(profilepic);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(fileInput != null){
-            setToolBarAvatar(profilepic);
-        }
+//        File profilepic = new File(dir, avatar);
+//        try {
+//            fileInput = new FileInputStream(profilepic);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if(fileInput != null){
+//            setToolBarAvatar(profilepic);
+//        }
     }
 
     class SaveItemDetails extends AsyncTask<String, Integer, String> {
@@ -108,7 +110,7 @@ public class Claim extends lfmsAllItems {
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
             } catch (Exception e ) {
-                err = "Network Error! Ensure you're connected to BITS Intranet";
+                err = "Network Error! Ensure you're connected to Internet";
             }
             return responseStrBuilder.toString();
         }

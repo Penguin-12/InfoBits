@@ -1,56 +1,71 @@
 package com.bitspilani.library.infoBits;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Map;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.bitspilani.library.infoBits.R;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bitspilani.library.infoBits.Responses.UserSettingsResponse;
 import com.bitspilani.library.infoBits.network.VolleySingleton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.VolleyError;
-import android.graphics.Bitmap;
-import java.io.ByteArrayOutputStream;
-import android.util.Base64;
-import java.util.Hashtable;
-import com.android.volley.AuthFailureError;
-import android.graphics.drawable.BitmapDrawable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class user_settings extends homepage implements View.OnClickListener {
-    private static final int RESULT_LOAD_IMAGE =1;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Map;
+
+import static com.bitspilani.library.infoBits.homepage.apiURL;
+import static com.bitspilani.library.infoBits.homepage.avatar;
+import static com.bitspilani.library.infoBits.homepage.email;
+import static com.bitspilani.library.infoBits.homepage.name;
+import static com.bitspilani.library.infoBits.homepage.password;
+import static com.bitspilani.library.infoBits.homepage.username;
+
+public class user_settings extends AppCompatActivity implements View.OnClickListener {
+    private static final int RESULT_LOAD_IMAGE = 1;
     EditText mobile;
     TextInputLayout oldPassword;
     TextInputLayout newPassword;
@@ -61,24 +76,60 @@ public class user_settings extends homepage implements View.OnClickListener {
     TextView changePassword;
     ImageButton imageButton;
     ImageView image;
-    LinearLayout nameLayout;
-    LinearLayout emailLayout;
-    LinearLayout mobileLayout;
-    ProgressBar spinner;
+    public static FileInputStream fileInput = null;
     Class previous;
     private ImageLoader mImageLoader;
     private GoogleApiClient client;
     String imageString;
     Boolean reload;
+    //    LinearLayout nameLayout;
+//    LinearLayout emailLayout;
+//    LinearLayout mobileLayout;
+    ProgressBar spinner;
+    SharedPreferences login_info;
+    SharedPreferences.Editor edit_login_info;
+    Toolbar toolbar;
+    File dir;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.profile_logout, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        spinner.setVisibility(View.VISIBLE);
+        if (item.getItemId() == R.id.profileLogout) {
+            edit_login_info.clear();
+            edit_login_info.apply();
+            Intent i = new Intent(getApplicationContext(), homepage.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_settings);
+        dir = getFilesDir();
+
         login_info = getSharedPreferences("login_info", MODE_PRIVATE);
         edit_login_info = login_info.edit();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         reload = false;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
@@ -94,19 +145,19 @@ public class user_settings extends homepage implements View.OnClickListener {
         updateMobile = (Button) findViewById(R.id.update1);
         updatePassword = (Button) findViewById(R.id.update2);
         imageButton = (ImageButton) findViewById(R.id.imageButton);
-        nameLayout = (LinearLayout) findViewById(R.id.NameLayout);
-        emailLayout = (LinearLayout)findViewById(R.id.EmailLayout);
-        mobileLayout = (LinearLayout) findViewById(R.id.MobileLayout);
-        spinner = (ProgressBar)findViewById(R.id.progressBar);
+//        nameLayout = (LinearLayout) findViewById(R.id.NameLayout);
+//        emailLayout = (LinearLayout)findViewById(R.id.EmailLayout);
+//        mobileLayout = (LinearLayout) findViewById(R.id.MobileLayout);
+        spinner = (ProgressBar) findViewById(R.id.progressBar);
         File profilepic = new File(dir, avatar);
         try {
             fileInput = new FileInputStream(profilepic);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        if(fileInput == null){
+        if (fileInput == null) {
             image.setImageResource(R.drawable.bits);
-        }else{
+        } else {
             image.setImageBitmap(BitmapFactory.decodeStream(fileInput));
             setToolBarAvatar(profilepic);
         }
@@ -133,7 +184,7 @@ public class user_settings extends homepage implements View.OnClickListener {
 
             case R.id.fab:
                 if (uploadBtn.getVisibility() == Button.VISIBLE) {
-                   showHideEdits(true);
+                    showHideEdits(true);
                 } else {
                     showHideEdits(false);
                 }
@@ -147,61 +198,60 @@ public class user_settings extends homepage implements View.OnClickListener {
                     spinner.setVisibility(View.VISIBLE);
                     serverCalls("Update Mobile");
                 } else {
-                    Toast.makeText(getApplicationContext(), "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Not Connected to Interent!", Toast.LENGTH_LONG).show();
                 }
 
                 break;
 
             case R.id.update2:
-                if(oldPassword.getEditText().getText().toString().isEmpty() || newPassword.getEditText().getText().toString().isEmpty() ||
-                confirmPassword.getEditText().getText().toString().isEmpty())
-                {
+                if (oldPassword.getEditText().getText().toString().isEmpty() || newPassword.getEditText().getText().toString().isEmpty() ||
+                        confirmPassword.getEditText().getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please fill all details", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 Snackbar.make(v, "Password update Server call", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 boolean validity = checkPasswordValidity(newPassword.getEditText().getText().toString(), confirmPassword.getEditText().getText().toString());
-                if (validity){
+                if (validity) {
                     if (isConnected()) {
                         spinner.setVisibility(View.VISIBLE);
                         serverCalls("Change Password");
                     } else {
-                        Toast.makeText(getApplicationContext(), "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Not Connected to Interent!", Toast.LENGTH_LONG).show();
                     }
-                }else{
-                    Toast.makeText(getApplicationContext(),"Passwords do not match",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.upload:
-                Snackbar.make(v, "Upload Image Server call", Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Upload in progress, please don't leave this page.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 if (isConnected()) {
                     spinner.setVisibility(View.VISIBLE);
                     //Not getting uploaded
                     uploadImage();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Not Connected to Interent!", Toast.LENGTH_LONG).show();
                 }
                 break;
             case R.id.imageButton:
-                    showFileChooser();
+                showFileChooser();
                 break;
             default:
                 break;
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        finish();
+//        return true;
+//    }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode,data);
-        if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data!= null){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             image.setImageURI(selectedImage);
         }
@@ -247,62 +297,62 @@ public class user_settings extends homepage implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(reload) {
+        if (reload) {
             finishAffinity();
             Intent i12 = new Intent(user_settings.this, homepage.class);
             startActivity(i12);
         }
     }
 
-    public void serverCalls(String type){
+    public void serverCalls(String type) {
 
         spinner.setVisibility(View.VISIBLE);
         // Instantiate the RequestQueue.
         final RequestQueue queue = VolleySingleton.getInstance().getRequestQueue();
-        switch (type){
-            case "User Settings":{
-                String url = apiURL + "user_settings.php?username=" + username +"&password=" + password;
+        switch (type) {
+            case "User Settings": {
+                String url = apiURL + "user_settings.php?username=" + username + "&password=" + password;
                 // Request a string response from the provided URL.
 
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            spinner.setVisibility(View.GONE);
-                            nameLayout.setVisibility(LinearLayout.VISIBLE);
-                            emailLayout.setVisibility(LinearLayout.VISIBLE);
-                            image.setVisibility(ImageView.VISIBLE);
-                            mobileLayout.setVisibility(LinearLayout.VISIBLE);
-                            FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
-                            fab.setVisibility(FloatingActionButton.VISIBLE);
-                            updateUserDetails(response, queue);
-                           // Toast.makeText(getApplicationContext(), "Response is: "+ response, Toast.LENGTH_LONG).show();
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                spinner.setVisibility(View.GONE);
+//                            nameLayout.setVisibility(LinearLayout.VISIBLE);
+//                            emailLayout.setVisibility(LinearLayout.VISIBLE);
+                                image.setVisibility(ImageView.VISIBLE);
+//                            mobileLayout.setVisibility(LinearLayout.VISIBLE);
+                                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                                fab.setVisibility(FloatingActionButton.VISIBLE);
+                                updateUserDetails(response, queue);
+                                // Toast.makeText(getApplicationContext(), "Response is: "+ response, Toast.LENGTH_LONG).show();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        spinner.setVisibility(View.GONE);
+//                            nameLayout.setVisibility(LinearLayout.VISIBLE);
+//                            emailLayout.setVisibility(LinearLayout.VISIBLE);
+                        image.setVisibility(ImageView.VISIBLE);
+                        TextView userName = (TextView) findViewById(R.id.textView2);
+                        userName.setText(name);
+                        TextView emailID = (TextView) findViewById(R.id.textView4);
+                        emailID.setText(email);
+                        File profilepic = new File(dir, avatar);
+                        try {
+                            fileInput = new FileInputStream(profilepic);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            spinner.setVisibility(View.GONE);
-                            nameLayout.setVisibility(LinearLayout.VISIBLE);
-                            emailLayout.setVisibility(LinearLayout.VISIBLE);
-                            image.setVisibility(ImageView.VISIBLE);
-                            TextView userName = (TextView) findViewById(R.id.textView2);
-                            userName.setText(name);
-                            TextView emailID = (TextView) findViewById(R.id.textView4);
-                            emailID.setText(email);
-                            File profilepic = new File(dir, avatar);
-                            try {
-                                fileInput = new FileInputStream(profilepic);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            if(fileInput == null){
-                                image.setImageResource(R.drawable.bits);
-                            }else{
-                                image.setImageBitmap(BitmapFactory.decodeStream(fileInput));
-                            }
+                        if (fileInput == null) {
+                            image.setImageResource(R.drawable.bits);
+                        } else {
+                            image.setImageBitmap(BitmapFactory.decodeStream(fileInput));
+                        }
 //
-                            Toast.makeText(getApplicationContext(), "ERROR: "+ error.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(getApplicationContext(), "ERROR: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 });
 
                 // Add the request to the RequestQueue.
@@ -310,14 +360,14 @@ public class user_settings extends homepage implements View.OnClickListener {
                 break;
             }
 
-            case "Change Password":{
-               // System.out.println("OLD PASSWORD"+oldPassword);
-                String url = apiURL + "user_settings.php?username="+username +"&password="+oldPassword.getEditText().getText().toString()+"&new_value="+ newPassword.getEditText().getText().toString() +"&change_type=0";
+            case "Change Password": {
+                // System.out.println("OLD PASSWORD"+oldPassword);
+                String url = apiURL + "user_settings.php?username=" + username + "&password=" + oldPassword.getEditText().getText().toString() + "&new_value=" + newPassword.getEditText().getText().toString() + "&change_type=0";
                 updateCall(url, queue);
                 break;
             }
-            case "Update Mobile":{
-                String url = apiURL + "user_settings.php?username="+username +"&password="+password+"&new_value="+ mobile.getText().toString() +"&change_type=1";
+            case "Update Mobile": {
+                String url = apiURL + "user_settings.php?username=" + username + "&password=" + password + "&new_value=" + mobile.getText().toString() + "&change_type=1";
                 updateCall(url, queue);
                 break;
             }
@@ -326,14 +376,14 @@ public class user_settings extends homepage implements View.OnClickListener {
         }
     }
 
-    private void updateUserDetails(String json, RequestQueue queue){
+    private void updateUserDetails(String json, RequestQueue queue) {
         UserSettingsResponse userResponse = new UserSettingsResponse(json);
         userResponse.parseJSON();
         TextView userName = (TextView) findViewById(R.id.textView2);
         userName.setText(userResponse.name);
         TextView emailID = (TextView) findViewById(R.id.textView4);
         emailID.setText(userResponse.email);
-        TextView mobileNo = (TextView) findViewById(R.id.mobileText);
+        EditText mobileNo = (EditText) findViewById(R.id.mobileText);
         mobileNo.setText(userResponse.mobile);
 //        mImageLoader = VolleySingleton.getInstance().getImageLoader();
 //        //Image URL - This can point to any image file supported by Android
@@ -342,14 +392,14 @@ public class user_settings extends homepage implements View.OnClickListener {
 //        image.setImageUrl(userResponse.imageUrl, mImageLoader);
     }
 
-    private boolean checkPasswordValidity(String password, String confirmPassword){
-        if (password.equals(confirmPassword)){
+    private boolean checkPasswordValidity(String password, String confirmPassword) {
+        if (password.equals(confirmPassword)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
+
     private void showHideEdits(Boolean hide) {
         if (hide) {
             imageButton.setVisibility(Button.INVISIBLE);
@@ -380,36 +430,36 @@ public class user_settings extends homepage implements View.OnClickListener {
         }
     }
 
-    private void updateCall(String url, RequestQueue queue){
+    private void updateCall(String url, RequestQueue queue) {
 
         final String urlS = url;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    // Display the first 500 characters of the response string.
-                    spinner.setVisibility(View.GONE);
-                    showHideEdits(true);
-                   // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                    try {
-                        JSONObject json = new JSONObject(response);
-                        if(urlS.contains("change_type=0") && json.get("status").toString().equals("1")){
-                            edit_login_info.putString("password", urlS.substring(urlS.indexOf("new_value=") + 10, urlS.indexOf("&change_type=")));
-                            edit_login_info.commit();
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        spinner.setVisibility(View.GONE);
+                        showHideEdits(true);
+                        // Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                        try {
+                            JSONObject json = new JSONObject(response);
+                            if (urlS.contains("change_type=0") && json.get("status").toString().equals("1")) {
+                                edit_login_info.putString("password", urlS.substring(urlS.indexOf("new_value=") + 10, urlS.indexOf("&change_type=")));
+                                edit_login_info.commit();
+                            }
+                            if (json.get("status").toString().equals("0"))
+                                Toast.makeText(getApplicationContext(), json.get("Message").toString(), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        if( json.get("status").toString().equals("0"))
-                            Toast.makeText(getApplicationContext(),json.get("Message").toString(),Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    spinner.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), "ERROR: "+ error.getMessage(), Toast.LENGTH_LONG).show();
-                }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                spinner.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), "ERROR: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
+        }
         );
 
         // Add the request to the RequestQueue.
@@ -417,7 +467,7 @@ public class user_settings extends homepage implements View.OnClickListener {
     }
 
 
-    public String getStringImage(Bitmap bmp){
+    public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
@@ -425,58 +475,58 @@ public class user_settings extends homepage implements View.OnClickListener {
         return encodedImage;
     }
 
-    private void uploadImage(){
+    private void uploadImage() {
 
         final ImageLoader imageLoader = VolleySingleton.getInstance().getImageLoader();
 
-        final String url = apiURL + "user_settings.php?username="+username +"&password="+password+"&change_type=2";
+        final String url = apiURL + "user_settings.php?username=" + username + "&password=" + password + "&change_type=2";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String s) {
-                    spinner.setVisibility(View.GONE);
-                    try {
-                        JSONObject json = new JSONObject(s);
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        spinner.setVisibility(View.GONE);
+                        try {
+                            JSONObject json = new JSONObject(s);
 
-                        if(url.contains("change_type=2") && json.get("status").toString().equals("1")){
-                            File file = new File(dir, json.get("file_name").toString());
-                            FileOutputStream fileOut;
-                            try {
-                                Toast.makeText(getApplicationContext(),json.get("Message").toString(),Toast.LENGTH_SHORT).show();
-                                fileOut = new FileOutputStream(file);
-                                ((BitmapDrawable) image.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, fileOut);
-                                edit_login_info.putString("avatar", file.getName());
-                                edit_login_info.commit();
-                                reload = true;
-                                fileOut.close();
-                            }catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }catch (IOException e) {
-                                e.printStackTrace();
+                            if (url.contains("change_type=2") && json.get("status").toString().equals("1")) {
+                                File file = new File(dir, json.get("file_name").toString());
+                                FileOutputStream fileOut;
+                                try {
+                                    Toast.makeText(getApplicationContext(), json.get("Message").toString(), Toast.LENGTH_SHORT).show();
+                                    fileOut = new FileOutputStream(file);
+                                    ((BitmapDrawable) image.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 50, fileOut);
+                                    edit_login_info.putString("avatar", file.getName());
+                                    edit_login_info.commit();
+                                    reload = true;
+                                    fileOut.close();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), json.get("Message").toString(), Toast.LENGTH_SHORT).show();
                             }
-                        }else{
-                            Toast.makeText(getApplicationContext(),json.get("Message").toString(),Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        spinner.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    spinner.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        ){
+        ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Converting Bitmap to String
-                imageString = getStringImage( ((BitmapDrawable)image.getDrawable()).getBitmap());
+                imageString = getStringImage(((BitmapDrawable) image.getDrawable()).getBitmap());
 
                 //Creating parameters
-                Map<String,String> params = new Hashtable<String, String>();
+                Map<String, String> params = new Hashtable<String, String>();
 
                 //Adding parameters
                 params.put("new_value", imageString);
@@ -497,5 +547,34 @@ public class user_settings extends homepage implements View.OnClickListener {
     private void showFileChooser() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), RESULT_LOAD_IMAGE);
+    }
+
+    public void setToolBarAvatar(File profilepic) {
+        Drawable d = Drawable.createFromPath(profilepic.getAbsolutePath());
+        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+        Integer h = bitmap.getHeight();
+        Integer w = bitmap.getWidth();
+        if (h > w) {
+            w = w * 150 / h;
+            h = 150;
+        } else if (h < w) {
+            h = h * 150 / w;
+            w = 150;
+        } else {
+            h = w = 150;
+        }
+        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
+        toolbar.setOverflowIcon(dr);
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(user_settings.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 }

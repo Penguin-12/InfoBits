@@ -2,23 +2,17 @@ package com.bitspilani.library.infoBits;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.bitspilani.library.infoBits.R;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class ebooks extends homepage{
 
@@ -27,25 +21,31 @@ public class ebooks extends homepage{
 
 
     @Override
-    protected void onCreate (Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ebooks1);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        File profilepic = new File(dir, avatar);
-        try {
-            fileInput = new FileInputStream(profilepic);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(fileInput != null){
-            setToolBarAvatar(profilepic);
-        }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+//        File profilepic = new File(dir, avatar);
+//        try {
+//            fileInput = new FileInputStream(profilepic);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if(fileInput != null){
+//            setToolBarAvatar(profilepic);
+//        }
         ListView l = (ListView) findViewById(R.id.ebookList);
-        String[] ebooks = {"Pearson Education", "Open Textbook Library", "Springer", "Taylor & Francis eBooks", "Open Access", "Intech", "Science Direct", "EBSCO"};
-        Integer[] ebookImages = {R.mipmap.pearson_education1, R.mipmap.opentextbook_library1, R.mipmap.springer, R.mipmap.taylor1, R.mipmap.oapen, R.mipmap.intech1, R.mipmap.science_direct1, R.mipmap.ebsco1};
+        String[] ebooks = {"Pearson Education", "Open Textbook Library", "Springer", "Taylor & Francis eBooks", "Open Access", "Intech", "Science Direct", "Mc Graw Hill India", "Cambridge University Press", "Wiley Blackwell", "IOP Science", "Open Texts", "EBSCO"};
+        Integer[] ebookImages = {R.mipmap.pearson_education1, R.mipmap.opentextbook_library1, R.mipmap.springer, R.mipmap.taylor1, R.mipmap.oapen, R.mipmap.intech1, R.mipmap.science_direct1, R.mipmap.mcgrawhill, R.mipmap.cambridge, R.mipmap.wiley, R.mipmap.iopscience, R.mipmap.open_texts, R.mipmap.ebsco1};
         TextView click = (TextView) findViewById(R.id.ebscoClick);
-        click.setOnClickListener(new View.OnClickListener(){
+        click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ecm.ebscohost.com/User/Login"));
@@ -59,13 +59,18 @@ public class ebooks extends homepage{
                 new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.tandfebooks.com/page/openaccess#listofOAtitles")),
                 new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oapen.org/search?sort=year;f1-language=English")),
                 new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.intechopen.com/books")),
-               /* new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://open.umn.edu/opentextbooks/"),
-                new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://link.springer.com/search/page/3?showAll=false&facet-content-type=%22Book%22"),
-                new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://www.tandfebooks.com/page/openaccess#listofOAtitles"),
-                new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://www.oapen.org/search?sort=year;f1-language=English"),
-                new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://www.intechopen.com/books"),*/
+                /* new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://open.umn.edu/opentextbooks/"),
+                 new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://link.springer.com/search/page/3?showAll=false&facet-content-type=%22Book%22"),
+                 new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://www.tandfebooks.com/page/openaccess#listofOAtitles"),
+                 new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://www.oapen.org/search?sort=year;f1-language=English"),
+                 new Intent(ebooks.this,LoadBooks.class).putExtra("url","http://www.intechopen.com/books"),*/
                 new Intent(ebooks.this, downloadable_links.class).putExtra("reference", "Elsevier e-Books"),
-                new Intent(Intent.ACTION_VIEW, Uri.parse("http://172.21.1.15/pdf/EBSCO%20eBooks%20Mannual.pdf"))};
+                new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.expresslibrary.mheducation.com/home")),
+                new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.cambridge.org/core/what-we-publish/books")),
+                new Intent(Intent.ACTION_VIEW, Uri.parse("https://onlinelibrary.wiley.com/action/showPublications?PubType=book")),
+                new Intent(Intent.ACTION_VIEW, Uri.parse("https://iopscience.iop.org/bookList/10/2")),
+                new Intent(Intent.ACTION_VIEW, Uri.parse("https://opentexts.world/")),
+                new Intent(Intent.ACTION_VIEW, Uri.parse("http://library.bits-pilani.ac.in/pdf/EBSCO%20eBooks%20Mannual.pdf"))};
         l.setAdapter(new MyAdapter(this, ebooks, ebookImages, links));
     }
 

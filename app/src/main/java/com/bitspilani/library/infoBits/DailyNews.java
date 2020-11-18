@@ -19,10 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitspilani.library.infoBits.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,9 +59,16 @@ public class DailyNews extends homepage{
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         newscast = (ListView) findViewById(R.id.newsList);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         msg = (TextView) findViewById(R.id.message);
         smsg = (TextView) findViewById(R.id.search_message);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         search = (FloatingActionButton) findViewById(R.id.search);
         refresh = (FloatingActionButton) findViewById(R.id.refresh);
         search.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +135,7 @@ public class DailyNews extends homepage{
             new APICall().execute(urlString);
         }
         else if(update){
-            Toast.makeText(DailyNews.this,"Not Connected to BITS Intranet!",Toast.LENGTH_LONG).show();
+            Toast.makeText(DailyNews.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
             showNews();
         }
     }
@@ -242,7 +248,7 @@ public class DailyNews extends homepage{
                 urlString = apiURL + actString + ".php?username=" + username + "&password=" + password + "&action=search&startDate=" + s + "&endDate=" + e + "&keyword=" + keyword;
                 new APICall().execute(urlString);
             } else {
-                Toast.makeText(DailyNews.this, "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
+                Toast.makeText(DailyNews.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
                 showSearchNews();
             }
         }
@@ -332,7 +338,7 @@ public class DailyNews extends homepage{
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
             } catch (Exception e ) {
-                err = "Network Error! Ensure you're connected to BITS Intranet";
+                err = "Network Error! Ensure you're connected to Internet.";
             }
             return responseStrBuilder.toString();
         }

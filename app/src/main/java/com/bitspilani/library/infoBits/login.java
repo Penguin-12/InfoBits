@@ -1,4 +1,5 @@
 package com.bitspilani.library.infoBits;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -19,12 +20,13 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.bitspilani.library.infoBits.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,6 +57,12 @@ public class login extends homepage {
         login_info = getSharedPreferences("login_info", MODE_PRIVATE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         username = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.pass);
         bt_forgot = (Button) findViewById(R.id.bt_forgot);
@@ -94,7 +102,7 @@ public class login extends homepage {
 
     public void OnClick_forgot_pass(View view) {
         if(isConnected()) {
-            Intent browserIntent =new Intent(login.this,LoadBooks.class).putExtra("url","http://172.21.1.15/account/forgot.php");
+            Intent browserIntent = new Intent(login.this, LoadBooks.class).putExtra("url", "http://library.bits-pilani.ac.in/account/forgot.php");
             startActivity(browserIntent);
         }
     }
@@ -102,7 +110,7 @@ public class login extends homepage {
 
     public void userReg(View view) {
         if(isConnected()) {
-            Intent browserIntent = new Intent(login.this,LoadBooks.class).putExtra("url","http://172.21.1.15/account/signup.php");
+            Intent browserIntent = new Intent(login.this, LoadBooks.class).putExtra("url", "http://library.bits-pilani.ac.in/account/signup.php");
             startActivity(browserIntent);
         }
     }
@@ -127,8 +135,8 @@ public class login extends homepage {
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
             } catch (Exception e ) {
-                Log.d("myTest",e.toString());
-                err = "Network Error! Ensure you're connected to BITS Intranet";
+                Log.d("myTest", e.toString());
+                err = "Network Error! Ensure you're connected to Internet";
 
             }
             return responseStrBuilder.toString();

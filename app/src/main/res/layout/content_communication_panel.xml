@@ -9,91 +9,95 @@
     tools:context="com.bitspilani.library.infoBits.ConnectWithLibrary"
     android:orientation="vertical"
     android:nestedScrollingEnabled="false">
+
     <ScrollView
+        android:id="@+id/CommScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:orientation="vertical"
-        android:id="@+id/CommScroll">
+
+        android:orientation="vertical">
+
         <RelativeLayout
+            android:id="@+id/commlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:orientation="vertical"
             android:background="#eee"
-            android:id="@+id/commlayout"
-            android:minHeight="500dp">
+            android:minHeight="500dp"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/comm1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/comm1"
-                android:clickable="true"
-                android:radius="50dp"
-                android:onClick="conversation1"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="false"
-                android:background="#e0dfeb"
+                android:layout_alignParentLeft="true"
                 android:layout_margin="10dp"
+                android:background="#e0dfeb"
+                android:clickable="true"
+                android:onClick="conversation1"
+                android:padding="10dp"
+                android:radius="50dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/comm2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comm1"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:background="#e0dfeb"
+                android:clickable="true"
+                android:onClick="conversation2"
                 android:padding="10dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp"
                 android:visibility="gone" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/comm2"
-                android:clickable="true"
-                android:onClick="conversation2"
-                android:visibility="gone"
-                android:layout_below="@+id/comm1"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:background="#e0dfeb"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/comm3"
-                android:clickable="true"
-                android:onClick="conversation3"
-                android:visibility="gone"
-                android:layout_below="@+id/comm2"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:background="#e0dfeb"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/comm4"
-                android:clickable="true"
-                android:onClick="conversation4"
-                android:visibility="gone"
-                android:layout_below="@+id/comm3"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:background="#e0dfeb"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/comm3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comm2"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:background="#e0dfeb"
+                android:clickable="true"
+                android:onClick="conversation3"
+                android:padding="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/comm4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comm3"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:background="#e0dfeb"
+                android:clickable="true"
+                android:onClick="conversation4"
+                android:padding="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/message"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:visibility="gone" />
 
         </RelativeLayout>
@@ -105,7 +109,6 @@
         android:background="#eee"
         android:stackFromBottom="false"
         android:scrollbars="vertical"
-        android:layout_margin="10dp"
         android:clickable="false"
         android:cacheColorHint="#211D70"
         android:divider="#211d70"

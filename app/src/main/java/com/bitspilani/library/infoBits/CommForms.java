@@ -18,10 +18,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitspilani.library.infoBits.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -54,6 +53,14 @@ public class CommForms extends ConnectWithLibrary {
         progress = (ProgressBar) findViewById(R.id.progressBar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progress.setVisibility(View.VISIBLE);
+
+                finish();
+            }
+        });
         if (cat == 2) {
             RadioButton books = (RadioButton) findViewById(R.id.radioB);
             books.setOnCheckedChangeListener(new RadioButton.OnCheckedChangeListener() {
@@ -389,7 +396,7 @@ public class CommForms extends ConnectWithLibrary {
                 new APICall().execute(url);
             }
         }else{
-            Toast.makeText(CommForms.this, "Not Connected to BITS Intranet!", Toast.LENGTH_LONG).show();
+            Toast.makeText(CommForms.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
         }
         inputArray.clear();
         if(cat == 1) {
@@ -413,7 +420,7 @@ public class CommForms extends ConnectWithLibrary {
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
             } catch (Exception e ) {
-                err = "Network Error! Ensure you're connected to BITS Intranet";
+                err = "Network Error! Ensure you're connected to Internet";
             }
             return responseStrBuilder.toString();
         }

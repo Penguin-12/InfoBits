@@ -26,9 +26,10 @@ import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.bitspilani.library.infoBits.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,6 +112,7 @@ public class ConnectWithLibrary extends homepage {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    spinner.setVisibility(View.VISIBLE);
                     Intent i = new Intent(ConnectWithLibrary.this, CommForms.class);
                     Bundle b = new Bundle();
                     b.putInt("cat", catint);
@@ -440,16 +442,15 @@ public class ConnectWithLibrary extends homepage {
                 }
             }
             else if(action.equals("new")){
-                if(error.isEmpty()){
+                if (error.isEmpty()) {
                     JSONObject data = (JSONObject) json.get("data");
                     String id = data.keys().next();
                     JSONObject dataval = (JSONObject) data.get(id);
-                    String[] updatevalues = {id, dataval.get("bitsid").toString(), dataval.get("category").toString(), dataval.get("name").toString(),dataval.get("topic").toString(),dataval.get("date").toString(),dataval.get("time").toString(),dataval.get("admins").toString(),dataval.get("talk").toString(),dataval.get("cat").toString(),dataval.get("status").toString()};
+                    String[] updatevalues = {id, dataval.get("bitsid").toString(), dataval.get("category").toString(), dataval.get("name").toString(), dataval.get("topic").toString(), dataval.get("date").toString(), dataval.get("time").toString(), dataval.get("admins").toString(), dataval.get("talk").toString(), dataval.get("cat").toString(), dataval.get("status").toString()};
                     dbhandler.addData(0, updatevalues);
-                    Toast.makeText(ConnectWithLibrary.this,message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(ConnectWithLibrary.this, message, Toast.LENGTH_LONG).show();
                     message = "";
-                }
-                else{
+                } else {
                     error = "";
                 }
             }
@@ -459,58 +460,24 @@ public class ConnectWithLibrary extends homepage {
         }
     }
 
-    private class APICall extends AsyncTask<String,Integer,String> {
-
-        String err;
-        @Override
-        protected String doInBackground(String[] params) {
-            String urlString= params[0];
-            StringBuilder responseStrBuilder = new StringBuilder();
-            String inputStr;
-
-            try {
-                URL url = new URL(urlString);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                BufferedReader streamReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-                while ((inputStr = streamReader.readLine()) != null)
-                    responseStrBuilder.append(inputStr);
-            } catch (Exception e ) {
-                err = "Network Error! Ensure you're connected to BITS Intranet";
-            }
-            return responseStrBuilder.toString();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            spinner.setVisibility(View.GONE);
-            if(!result.isEmpty()) {
-                try {
-                    JSONObject json = new JSONObject(result);
-                    updateInternalData(json, json.get("action").toString());
-                } catch (Exception e) {
-                    //Toast.makeText(ConnectWithLibrary.this,e.getMessage(),Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-            }else{
-                if(!err.isEmpty()){
-                    Toast.makeText(ConnectWithLibrary.this,err,Toast.LENGTH_LONG).show();
-                }
-                if(urlString.contains("action=update")) {
-                    printComms();
-                }
-                else{
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        Objects.requireNonNull(findViewById(R.id.convList)).setVisibility(View.VISIBLE);
-                        Objects.requireNonNull(findViewById(R.id.convMenu)).setVisibility(View.VISIBLE);
-                        Objects.requireNonNull(findViewById(R.id.replyLayout)).setVisibility(View.VISIBLE);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 0) return;
+        switch (requestCode) {
+            case (1): {
+                if (resultCode == Activity.RESULT_OK) {
+                    String newText = data.getStringExtra("update");
+                    if (newText.equals("yes")) {
+                        printComms();
                     }
-
                 }
+                break;
             }
         }
     }
 
-    public void printComms(){
+    public void printComms() {
         id = "";
         spinner.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -598,49 +565,82 @@ public class ConnectWithLibrary extends homepage {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (1) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    String newText = data.getStringExtra("update");
-                    if(newText.equals("yes")){
-                        printComms();
-                    }
-                }
-                break;
-            }
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         if (this.drawerlayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerlayout.closeDrawer(GravityCompat.START);
-        }
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if(findViewById(R.id.replyLayout) != null && Objects.requireNonNull(findViewById(R.id.replyLayout)).getVisibility() == View.VISIBLE){
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (findViewById(R.id.replyLayout) != null && Objects.requireNonNull(findViewById(R.id.replyLayout)).getVisibility() == View.VISIBLE) {
                 Objects.requireNonNull(findViewById(R.id.replyLayout)).setVisibility(View.GONE);
-            }
-            else if(!id.equals("")){
+            } else if (!id.equals("")) {
                 setComm(false);
-            }
-            else{
-                super.onBackPressed();
+            } else {
+
+                finish();
             }
         }
     }
 
-    public class MyAdapter extends SimpleAdapter{
+    private class APICall extends AsyncTask<String, Integer, String> {
 
-        List<HashMap<String,String>> talks;
+        String err;
+
+        @Override
+        protected String doInBackground(String[] params) {
+            String urlString = params[0];
+            StringBuilder responseStrBuilder = new StringBuilder();
+            String inputStr;
+
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader streamReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+                while ((inputStr = streamReader.readLine()) != null)
+                    responseStrBuilder.append(inputStr);
+            } catch (Exception e) {
+                err = "Network Error! Ensure you're connected to Internet";
+            }
+            return responseStrBuilder.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            spinner.setVisibility(View.GONE);
+            if (!result.isEmpty()) {
+                try {
+                    JSONObject json = new JSONObject(result);
+                    updateInternalData(json, json.get("action").toString());
+                } catch (Exception e) {
+                    //Toast.makeText(ConnectWithLibrary.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            } else {
+                if (!err.isEmpty()) {
+                    Toast.makeText(ConnectWithLibrary.this, err, Toast.LENGTH_LONG).show();
+                }
+                if (urlString.contains("action=update")) {
+                    printComms();
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        Objects.requireNonNull(findViewById(R.id.convList)).setVisibility(View.VISIBLE);
+                        Objects.requireNonNull(findViewById(R.id.convMenu)).setVisibility(View.VISIBLE);
+                        Objects.requireNonNull(findViewById(R.id.replyLayout)).setVisibility(View.VISIBLE);
+                    }
+
+                }
+            }
+        }
+    }
+
+    public class MyAdapter extends SimpleAdapter {
+
+        List<HashMap<String, String>> talks;
 
         public MyAdapter(Context context, List<HashMap<String, String>> items, int resource, String[] from, int[] to) {
             super(context, items, resource, from, to);
             talks = items;
         }
 
-        public class ViewHolder{
+        public class ViewHolder {
             public TextView info;
             public TextView talk;
             public WebView table;
