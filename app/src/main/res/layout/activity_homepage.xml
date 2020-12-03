@@ -232,12 +232,10 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
                         android:fontFamily="@font/mulish_regular"
                         android:gravity="center"
-                        android:text="One Search (EBSCO)"
+                        android:text="One Search (Shibboleth)"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"

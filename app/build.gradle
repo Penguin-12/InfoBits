@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.bitspilani.library.infoBits"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -27,9 +27,8 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:23.4.0'
     implementation 'com.android.support:design:23.4.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.google.android.gms:play-services-appindexing:9.8.0'
     implementation 'com.android.volley:volley:1.1.1'
-
+    implementation 'com.android.support:cardview-v7:28.0.0'
     // compile project(":volley")
 }

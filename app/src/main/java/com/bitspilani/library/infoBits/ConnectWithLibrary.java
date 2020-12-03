@@ -101,7 +101,7 @@ public class ConnectWithLibrary extends homepage {
             ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.mipmap.logo);
         }else{
             ((ImageView) navHeader.findViewById(R.id.profile)).setImageBitmap(BitmapFactory.decodeStream(fileInput));
-            setToolBarAvatar(profilepic);
+//            setToolBarAvatar(profilepic);
         }
         cat = navigationView.getMenu().getItem(0).getItemId();
         navigationView.setItemIconTintList(null);

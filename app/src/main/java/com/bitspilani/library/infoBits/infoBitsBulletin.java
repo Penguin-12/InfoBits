@@ -140,7 +140,7 @@ public class infoBitsBulletin extends homepage {
             e.printStackTrace();
         }
         if(fileInput != null){
-            setToolBarAvatar(profilepic);
+//            setToolBarAvatar(profilepic);
         }
     }
 
@@ -559,7 +559,7 @@ public class infoBitsBulletin extends homepage {
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                                   //  Uri uri = Uri.parse(links.get(position)); // missing 'http://' will cause crashed
-                                    Intent intent = new Intent(infoBitsBulletin.this,LoadBooks.class).putExtra("url",links.get(position));
+                                    Intent intent = new Intent(infoBitsBulletin.this, CustomWebView.class).putExtra("url", links.get(position));
                                     startActivity(intent);
                                 }
                             });

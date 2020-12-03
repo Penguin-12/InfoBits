@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -124,7 +122,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
             email = user.get("email").toString();
             avatar = user.get("avatar").toString();
         }
-        View v = findViewById(R.id.homeicons);
+//        View v = findViewById(R.id.homeicons);
         /*Integer[] icons = new Integer[]{R.mipmap.os, R.mipmap.cwl, R.mipmap.dn, R.mipmap.libs, R.mipmap.libr, R.id.opac};
         Integer[] dimens = getDimens();
         Integer height = dimens[0]/4 - getCorrectPixels(24), width = (dimens[1] - getCorrectPixels(24 * (   icons.length/2)))/3;
@@ -152,7 +150,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 if (clickedItem != 0) {
                     Intent i = null;
                     if (clickedItem == R.id.os_id) {
-                        i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://search.ebscohost.com/Community.aspx"));
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/");
+
+//                                new Intent(Intent.ACTION_VIEW, Uri.parse("https://idpb.bits-pilani.ac.in/"));
                     } else if (clickedItem == R.id.comm_id) {
                         if (!isConnected()) connectWithLibrary = true;
                         i = new Intent(homepage.this, ConnectWithLibrary.class);
@@ -208,7 +208,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                     ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.mipmap.logo);
                 } else {
                     ((ImageView) navHeader.findViewById(R.id.profile)).setImageBitmap(BitmapFactory.decodeStream(fileInput));
-                    setToolBarAvatar(profilepic);
+//                    setToolBarAvatar(profilepic);
                 }
 
             }
@@ -355,7 +355,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         } else {
             spinner.setVisibility(View.VISIBLE);
             Intent browserIntent =
-                    new Intent(Intent.ACTION_VIEW, Uri.parse("http://search.ebscohost.com/Community.aspx"));//http://search.ebscohost.com/login.aspx?authtype=uid&user=bits2015&password=pilani&profile=eds
+                    new Intent(this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/");
+
+//            new Intent(Intent.ACTION_VIEW, Uri.parse("https://idpb.bits-pilani.ac.in/"));//http://search.ebscohost.com/login.aspx?authtype=uid&user=bits2015&password=pilani&profile=eds
             startActivity(browserIntent);
         }
     }
@@ -595,23 +597,23 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         Toast.makeText(this, "Please Login to Access!", Toast.LENGTH_LONG).show();
     }
 
-    public void setToolBarAvatar(File profilepic) {
-        Drawable d = Drawable.createFromPath(profilepic.getAbsolutePath());
-        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-        Integer h = bitmap.getHeight();
-        Integer w = bitmap.getWidth();
-        if (h > w) {
-            w = w * 150 / h;
-            h = 150;
-        } else if (h < w) {
-            h = h * 150 / w;
-            w = 150;
-        } else {
-            h = w = 150;
-        }
-        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
-        toolbar.setOverflowIcon(dr);
-    }
+//    public void setToolBarAvatar(File profilepic) {
+//        Drawable d = Drawable.createFromPath(profilepic.getAbsolutePath());
+//        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+//        Integer h = bitmap.getHeight();
+//        Integer w = bitmap.getWidth();
+//        if (h > w) {
+//            w = w * 150 / h;
+//            h = 150;
+//        } else if (h < w) {
+//            h = h * 150 / w;
+//            w = 150;
+//        } else {
+//            h = w = 150;
+//        }
+//        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
+//        toolbar.setOverflowIcon(dr);
+//    }
 
     public class Swipe_Adapter extends PagerAdapter {
         private ArrayList<Bitmap> image_resources = new ArrayList<>();
@@ -804,7 +806,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                                         startActivity(browserIntent);*/
                                     Log.d("myTest", url.toString());
                                     Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
-                                    // startActivity(browserIntent);
+                                    startActivity(browserIntent);
                                 }
                             }
                         });

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -159,7 +158,7 @@ public class user_settings extends AppCompatActivity implements View.OnClickList
             image.setImageResource(R.drawable.bits);
         } else {
             image.setImageBitmap(BitmapFactory.decodeStream(fileInput));
-            setToolBarAvatar(profilepic);
+//            setToolBarAvatar(profilepic);
         }
         uploadBtn.setOnClickListener(this);
         updateMobile.setOnClickListener(this);
@@ -549,23 +548,23 @@ public class user_settings extends AppCompatActivity implements View.OnClickList
         startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), RESULT_LOAD_IMAGE);
     }
 
-    public void setToolBarAvatar(File profilepic) {
-        Drawable d = Drawable.createFromPath(profilepic.getAbsolutePath());
-        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-        Integer h = bitmap.getHeight();
-        Integer w = bitmap.getWidth();
-        if (h > w) {
-            w = w * 150 / h;
-            h = 150;
-        } else if (h < w) {
-            h = h * 150 / w;
-            w = 150;
-        } else {
-            h = w = 150;
-        }
-        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
-        toolbar.setOverflowIcon(dr);
-    }
+//    public void setToolBarAvatar(File profilepic) {
+//        Drawable d = Drawable.createFromPath(profilepic.getAbsolutePath());
+//        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+//        Integer h = bitmap.getHeight();
+//        Integer w = bitmap.getWidth();
+//        if (h > w) {
+//            w = w * 150 / h;
+//            h = 150;
+//        } else if (h < w) {
+//            h = h * 150 / w;
+//            w = 150;
+//        } else {
+//            h = w = 150;
+//        }
+//        Drawable dr = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, w, h, true));
+//        toolbar.setOverflowIcon(dr);
+//    }
 
     public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);

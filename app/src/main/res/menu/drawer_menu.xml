@@ -16,7 +16,7 @@
         <item
             android:id="@+id/news_id"
             android:title="@string/title_activity_daily_news"
-            android:icon="@mipmap/dn"
+            android:icon="@drawable/dn"
             />
 
         <item
@@ -28,7 +28,7 @@
         <item
             android:id="@+id/lf_id"
             android:title="@string/drawer_menu_lf"
-            android:icon="@mipmap/lf"
+            android:icon="@drawable/lf"
             >
         </item>
     </group>
@@ -43,19 +43,19 @@
         <item
             android:id="@+id/eb_id"
             android:title="@string/title_activity_ebooks"
-            android:icon="@drawable/ebxii"
+            android:icon="@drawable/eb"
             />
 
         <item
             android:id="@+id/od_id"
             android:title="@string/drawer_menu_odb"
-            android:icon="@drawable/odxii"
+            android:icon="@drawable/od"
             />
 
         <item
             android:id="@+id/opac_id"
             android:title="@string/drawer_menu_opac"
-            android:icon="@mipmap/opac"
+            android:icon="@drawable/opac"
             />
     </group>
 </menu>

@@ -73,7 +73,7 @@ public class login extends homepage {
     }
 
     public void OnClick_sign_in(View view) {
-        if(isConnected()) {
+        if (isConnected()) {
             UserName = username.getText().toString();
             Password = password.getText().toString();
             if (UserName.isEmpty() || Password.isEmpty()) {
@@ -89,11 +89,10 @@ public class login extends homepage {
     public void showPass(View view) {
         Password = password.getText().toString();
         if (!Password.isEmpty()) {
-            if(password.getTransformationMethod() == null){
+            if (password.getTransformationMethod() == null) {
                 password.setTransformationMethod(new PasswordTransformationMethod());
                 bt_show_pass.clearColorFilter();
-            }
-            else{
+            } else {
                 password.setTransformationMethod(null);
                 bt_show_pass.setColorFilter(R.color.colorPrimaryDark);
             }
@@ -101,40 +100,93 @@ public class login extends homepage {
     }
 
     public void OnClick_forgot_pass(View view) {
-        if(isConnected()) {
-            Intent browserIntent = new Intent(login.this, LoadBooks.class).putExtra("url", "http://library.bits-pilani.ac.in/account/forgot.php");
+        if (isConnected()) {
+            Intent browserIntent = new Intent(login.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/account/forgot.php");
             startActivity(browserIntent);
         }
     }
 
 
     public void userReg(View view) {
-        if(isConnected()) {
-            Intent browserIntent = new Intent(login.this, LoadBooks.class).putExtra("url", "http://library.bits-pilani.ac.in/account/signup.php");
+        if (isConnected()) {
+            Intent browserIntent = new Intent(login.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/account/signup.php");
             startActivity(browserIntent);
         }
     }
 
-    private class APICall extends AsyncTask<String,Integer,String> {
+    public void login_user(JSONObject json) {
+        try {
+            if (!json.get("data").toString().equals("[]")) {
+                JSONObject data = (JSONObject) json.get("data");
+                edit_login_info.putString("username", data.get("userid").toString());
+                edit_login_info.putString("name", data.get("name").toString());
+                edit_login_info.putString("email", data.get("email").toString());
+                edit_login_info.putString("category", data.get("category").toString());
+                edit_login_info.putString("password", Password);
+                edit_login_info.putString("avatar", data.get("avatar").toString());
+
+                if (edit_login_info.commit()) {
+                    String avatar = login_info.getString("avatar", "");
+                    if (!avatar.isEmpty()) {
+                        File profilepic = new File(dir, avatar);
+                        if (!profilepic.exists()) {
+                            new LoadImage().execute(imageApiURL + "profilepics/" + avatar);
+                        } else {
+                            launchHome();
+                        }
+                    } else {
+                        launchHome();
+                    }
+                } else {
+                    Toast.makeText(login.this, "Something went Wrong!", Toast.LENGTH_LONG).show();
+                }
+            } else if (json.has("err_message") && !json.get("err_message").toString().isEmpty()) {
+                Toast.makeText(login.this, json.get("err_message").toString(), Toast.LENGTH_LONG).show();
+                toggleInterface(View.GONE, true);
+            }
+        } catch (JSONException e) {
+            Toast.makeText(login.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            toggleInterface(View.GONE, true);
+        }
+    }
+
+    public void launchHome() {
+        finishAffinity();
+        Intent i12 = new Intent(login.this, homepage.class);
+        startActivity(i12);
+    }
+
+    public void toggleInterface(int spinview, Boolean handle) {
+        spinner.setVisibility(spinview);
+        spinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        username.setEnabled(handle);
+        password.setEnabled(handle);
+        bt_signin.setClickable(handle);
+        bt_forgot.setClickable(handle);
+    }
+
+    private class APICall extends AsyncTask<String, Integer, String> {
 
         String err;
+
         @TargetApi(Build.VERSION_CODES.KITKAT)
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
-        protected String doInBackground(String[] params){
-            String urlString= params[0];
+        protected String doInBackground(String[] params) {
+            String urlString = params[0];
             StringBuilder responseStrBuilder = new StringBuilder();
             String inputStr;
             try {
                 URL url = new URL(urlString);
-                Log.d("myTest",url.toString());
+                Log.d("myTest", url.toString());
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                Log.d("myTest","here1");
+                Log.d("myTest", "here1");
                 BufferedReader streamReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8));
-                Log.d("myTest","here2");
+                Log.d("myTest", "here2");
                 while ((inputStr = streamReader.readLine()) != null)
                     responseStrBuilder.append(inputStr);
-            } catch (Exception e ) {
+            } catch (Exception e) {
                 Log.d("myTest", e.toString());
                 err = "Network Error! Ensure you're connected to Internet";
 
@@ -144,18 +196,17 @@ public class login extends homepage {
 
         @Override
         protected void onPostExecute(String result) {
-            if(!result.isEmpty()) {
+            if (!result.isEmpty()) {
                 try {
                     JSONObject json = new JSONObject(result);
                     login_user(json);
                 } catch (Exception e) {
-                    Toast.makeText(login.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(login.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                     toggleInterface(View.GONE, true);
                 }
-            }
-            else{
-                if(!err.isEmpty()){
+            } else {
+                if (!err.isEmpty()) {
                     Toast.makeText(login.this, err, Toast.LENGTH_LONG).show();
                     toggleInterface(View.GONE, true);
                 }
@@ -163,49 +214,12 @@ public class login extends homepage {
         }
     }
 
-    public void login_user(JSONObject json){
-        try{
-            if(!json.get("data").toString().equals("[]")) {
-                JSONObject data = (JSONObject) json.get("data");
-                edit_login_info.putString("username", data.get("userid").toString());
-                edit_login_info.putString("name", data.get("name").toString());
-                edit_login_info.putString("email", data.get("email").toString());
-                edit_login_info.putString("category", data.get("category").toString());
-                edit_login_info.putString("password", Password);
-                edit_login_info.putString("avatar", data.get("avatar").toString());
-                if(edit_login_info.commit()){
-                    String avatar = login_info.getString("avatar","");
-                    if(!avatar.isEmpty()){
-                        File profilepic = new File(dir, avatar);
-                        if(!profilepic.exists()){
-                            new LoadImage().execute(imageApiURL + "profilepics/" + avatar);
-                        }
-                        else{
-                            launchHome();
-                        }
-                    }else{
-                        launchHome();
-                    }
-                }else{
-                    Toast.makeText(login.this,"Something went Wrong!",Toast.LENGTH_LONG).show();
-                }
-            }
-            else if(json.has("err_message") && !json.get("err_message").toString().isEmpty()){
-                Toast.makeText(login.this,json.get("err_message").toString(),Toast.LENGTH_LONG).show();
-                toggleInterface(View.GONE, true);
-            }
-        } catch(JSONException e) {
-            Toast.makeText(login.this,e.getMessage(),Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-            toggleInterface(View.GONE, true);
-        }
-    }
-
-@SuppressLint("StaticFieldLeak")
-private class LoadImage extends AsyncTask<String, String, Bitmap> {
+    @SuppressLint("StaticFieldLeak")
+    private class LoadImage extends AsyncTask<String, String, Bitmap> {
 
         Bitmap bitmap;
         String filename;
+
         protected Bitmap doInBackground(String[] args) {
             try {
                 bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
@@ -223,35 +237,19 @@ private class LoadImage extends AsyncTask<String, String, Bitmap> {
             String ext = filename.substring(filename.lastIndexOf("."));
             try {
                 fileOut = new FileOutputStream(file);
-                if(ext.equals(".jpg") || ext.equals(".jpeg")){
+                if (ext.equals(".jpg") || ext.equals(".jpeg")) {
                     image.compress(Bitmap.CompressFormat.JPEG, 50, fileOut);
-                }
-                else{
+                } else {
                     image.compress(Bitmap.CompressFormat.PNG, 50, fileOut);
                 }
                 fileOut.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             launchHome();
         }
-    }
-
-    public void launchHome(){
-        finishAffinity();
-        Intent i12 = new Intent(login.this, homepage.class);
-        startActivity(i12);
-    }
-
-    public void toggleInterface(int spinview, Boolean handle){
-        spinner.setVisibility(spinview);
-        spinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        username.setEnabled(handle);
-        password.setEnabled(handle);
-        bt_signin.setClickable(handle);
-        bt_forgot.setClickable(handle);
     }
 
     @Override

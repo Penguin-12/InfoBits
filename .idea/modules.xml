@@ -3,8 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-InfoBits.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-InfoBits.iml" group="InfoBits" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DVM-Group Projects-InfoBITS-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DVM-Group Projects-InfoBITS-app.iml" group="InfoBITS/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/InfoBITS.iml" filepath="$PROJECT_DIR$/.idea/modules/InfoBITS.iml" group="InfoBITS" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/InfoBITS-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/InfoBITS-app.iml" group="InfoBITS/app" />
       <module fileurl="file://$PROJECT_DIR$/InfoBits.iml" filepath="$PROJECT_DIR$/InfoBits.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/InfoBits-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/InfoBits-app.iml" group="InfoBits/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

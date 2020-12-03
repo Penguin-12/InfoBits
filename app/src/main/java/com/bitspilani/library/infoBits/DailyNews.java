@@ -118,7 +118,7 @@ public class DailyNews extends homepage{
             e.printStackTrace();
         }
         if(fileInput != null){
-            setToolBarAvatar(profilepic);
+//            setToolBarAvatar(profilepic);
         }
         dbhandler = new DBHandler(this, null, null);
         setNews(true);
