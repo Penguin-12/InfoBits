@@ -42,9 +42,17 @@
     <string name="drawer_menu_os">One Search</string>
     <string name="drawer_menu_ibb">InfoBITS Bulletin</string>
     <string name="drawer_menu_lf">Lost and Found</string>
+    <string name="drawer_menu_pf">Periodical Finder</string>
+    <string name="drawer_menu_afa">Ask For Articles</string>
     <string name="drawer_menu_qp">Question Papers</string>
     <string name="drawer_menu_odb">Online Databases</string>
+    <string name="drawer_menu_ir">Institutional Repository</string>
+    <string name="drawer_menu_ndl">National Digital Library</string>
+    <string name="drawer_menu_vlab">Virtual Labs</string>
+    <string name="drawer_menu_sp">Swayam Prabha</string>
+    <string name="drawer_menu_sg">Shodh Ganga</string>
     <string name="drawer_menu_opac">WEB OPAC</string>
+
     <string name="online_db">Online Databases</string>
     <string name="claim_lost_item">Lost and Found - Claim</string>
     <string name="lost_and_found">Lost and Found</string>

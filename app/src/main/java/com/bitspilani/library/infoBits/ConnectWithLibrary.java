@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,7 +50,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class ConnectWithLibrary extends homepage {
+import static com.bitspilani.library.infoBits.homepage.apiURL;
+import static com.bitspilani.library.infoBits.homepage.avatar;
+import static com.bitspilani.library.infoBits.homepage.email;
+import static com.bitspilani.library.infoBits.homepage.fileInput;
+import static com.bitspilani.library.infoBits.homepage.name;
+import static com.bitspilani.library.infoBits.homepage.password;
+import static com.bitspilani.library.infoBits.homepage.usercat;
+import static com.bitspilani.library.infoBits.homepage.username;
+
+public class ConnectWithLibrary extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerlayout;
     NavigationView navigationView;
@@ -57,37 +69,49 @@ public class ConnectWithLibrary extends homepage {
     TextView msg;
     String id, status;
     JSONObject internal = new JSONObject();
-    public final static String[] cats = {"breco","ill","ao","grieve","breview","feedback"}, catnames = {"Book Recommendation","Documents Not Found","Inaccessible Database","Service Issues","Book Review","Feedback"};
-    public ArrayList<HashMap<String,String>> talks = new ArrayList<HashMap<String,String>>();
+    public final static String[] cats = {"breco", "ill", "ao", "grieve", "breview", "feedback"}, catnames = {"Book Recommendation", "Documents Not Found", "Inaccessible Database", "Service Issues", "Book Review", "Feedback"};
+    public ArrayList<HashMap<String, String>> talks = new ArrayList<HashMap<String, String>>();
     String urlString = "", message = "", error = "", category = cats[0];
     ProgressBar spinner;
     ScrollView commScroll;
-    RelativeLayout replyLayout,commMenu,convMenu;
-    TextView comm1,comm2,comm3,comm4;
+    RelativeLayout replyLayout, commMenu, convMenu;
+    TextView comm1, comm2, comm3, comm4;
     int[] comms = {R.id.comm1, R.id.comm2, R.id.comm3, R.id.comm4};
     int start = 0, catint = 1, total = 0;
     public final static String actString = "communication_panel";
+    Toolbar toolbar;
+    File dir;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communication_panel);
+        dir = getFilesDir();
+
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
-        commScroll = (ScrollView)findViewById(R.id.CommScroll);
-        replyLayout = (RelativeLayout)findViewById(R.id.replyLayout);
-        commMenu = (RelativeLayout)findViewById(R.id.commMenu);
-        convMenu = (RelativeLayout)findViewById(R.id.convMenu);
+        commScroll = (ScrollView) findViewById(R.id.CommScroll);
+        replyLayout = (RelativeLayout) findViewById(R.id.replyLayout);
+        commMenu = (RelativeLayout) findViewById(R.id.commMenu);
+        convMenu = (RelativeLayout) findViewById(R.id.convMenu);
         convlist = (ListView) findViewById(R.id.convList);
-        comm1 = (TextView)findViewById(R.id.comm1);
-        comm2 = (TextView)findViewById(R.id.comm2);
-        comm3 = (TextView)findViewById(R.id.comm3);
-        comm4 = (TextView)findViewById(R.id.comm4);
+        comm1 = (TextView) findViewById(R.id.comm1);
+        comm2 = (TextView) findViewById(R.id.comm2);
+        comm3 = (TextView) findViewById(R.id.comm3);
+        comm4 = (TextView) findViewById(R.id.comm4);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         msg = (TextView) findViewById(R.id.message);
         drawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         setSupportActionBar(toolbar);
-        navigationView.setNavigationItemSelectedListener(this);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//                spinner.setVisibility(View.VISIBLE);
+//            }
+//        });
+        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         View navHeader = navigationView.getHeaderView(0);
         ((TextView) navHeader.findViewById(R.id.brand)).setText(name);
         ((TextView) navHeader.findViewById(R.id.email)).setText(email);
@@ -97,8 +121,8 @@ public class ConnectWithLibrary extends homepage {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        if(fileInput == null){
-            ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.mipmap.logo);
+        if (fileInput == null) {
+            ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.drawable.bits);
         }else{
             ((ImageView) navHeader.findViewById(R.id.profile)).setImageBitmap(BitmapFactory.decodeStream(fileInput));
 //            setToolBarAvatar(profilepic);
@@ -673,13 +697,30 @@ public class ConnectWithLibrary extends homepage {
                 holder.talk.setVisibility(View.GONE);
                 holder.table.loadData(data.get("talk"),"text/html",null);
                 holder.table.setVisibility(View.VISIBLE);
-            }
-            else{
+            } else {
                 holder.talk.setVisibility(View.VISIBLE);
                 holder.table.setVisibility(View.GONE);
                 holder.talk.setText(data.get("talk"));
             }
             return vi;
         }
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(ConnectWithLibrary.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+
+    public int getCorrectPixels(float dips) {
+        float scale = getResources().getDisplayMetrics().density;
+        int pixels = (int) ((int) dips * scale);
+        return pixels;
     }
 }

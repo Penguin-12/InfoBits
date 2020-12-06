@@ -1,11 +1,15 @@
 package com.bitspilani.library.infoBits;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +30,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class lfmsAllItems extends homepage {
+import static com.bitspilani.library.infoBits.homepage.apiURL;
+import static com.bitspilani.library.infoBits.homepage.password;
+import static com.bitspilani.library.infoBits.homepage.username;
+
+public class lfmsAllItems extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     String message = "", actString = "get_all_items", urlString = "";
@@ -36,7 +44,7 @@ public class lfmsAllItems extends homepage {
     DBHandler dbhandler;
     JSONObject internal;
     private ProgressBar spinner;
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -246,6 +254,17 @@ public class lfmsAllItems extends homepage {
                 }
             }
             return v;
+        }
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(lfmsAllItems.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            return false;
         }
     }
 }

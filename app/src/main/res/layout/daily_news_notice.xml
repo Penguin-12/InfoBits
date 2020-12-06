@@ -27,7 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/news"
-                android:padding="3dp"
+
+                android:fontFamily="@font/mulish_regular"
+                android:padding="5dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#211d70"
                 android:textSize="15sp" />
@@ -37,7 +39,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/news1"
-                android:padding="3dp"
+
+                android:fontFamily="@font/mulish_regular"
+                android:padding="5dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#211d70"
                 android:textSize="15sp" />
@@ -47,7 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/news2"
-                android:padding="3dp"
+
+                android:fontFamily="@font/mulish_regular"
+                android:padding="5dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#211d70"
                 android:textSize="15sp" />

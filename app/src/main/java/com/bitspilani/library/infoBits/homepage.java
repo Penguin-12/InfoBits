@@ -61,7 +61,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Pattern;
 
 public class homepage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -158,11 +157,17 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                         i = new Intent(homepage.this, ConnectWithLibrary.class);
                     } else if (clickedItem == R.id.news_id) {
                         i = new Intent(homepage.this, DailyNews.class);
-                    } else if (clickedItem == R.id.ibb_id) {
-                        i = new Intent(homepage.this, infoBitsBulletin.class);
-                    } else if (clickedItem == R.id.lf_id) {
+                    }
+//                    else if (clickedItem == R.id.ibb_id) {
+//                        i = new Intent(homepage.this, infoBitsBulletin.class);
+//                    }
+                    else if (clickedItem == R.id.lf_id) {
                         i = new Intent(homepage.this, lfmsAllItems.class);
-                    } /*else if (id == R.id.qp_id) {
+                    } else if (clickedItem == R.id.pf_id) {
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/search/print_and_online_ejournals.php");
+                    } else if (clickedItem == R.id.afa_id) {
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/articlerequest.php");
+                    }/*else if (id == R.id.qp_id) {
             Intent qpI = new Intent(homepage.this, downloadable_links.class);
             qpI.putExtra("title", "Question Papers");
             qpI.putExtra("reference", "Question Papers");
@@ -172,8 +177,13 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                     } else if (clickedItem == R.id.od_id) {
                         i = new Intent(homepage.this, OnlineDb.class);
                     } else if (clickedItem == R.id.opac_id) {
-                        i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://libcatalog.bits-pilani.ac.in/"));
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://libcatalog.bits-pilani.ac.in/");
+                    } else if (clickedItem == R.id.ir_id) {
+                        i = new Intent(homepage.this, InstitutionalRepo.class);
+                    } else if (clickedItem == R.id.qp_id) {
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/Question_Papers/question_paper.php");
                     }
+                    clickedItem = 0;
                     if (connectWithLibrary) {
                         Toast.makeText(homepage.this, "You need internet to access this feature", Toast.LENGTH_SHORT).show();
                         connectWithLibrary = false;
@@ -194,7 +204,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         if (navHeader.findViewById(R.id.brand) != null) {
             if (user.isEmpty()) {
                 ((TextView) navHeader.findViewById(R.id.brand)).setText(R.string.guest_user);
-                ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.mipmap.logo);
+                ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.drawable.bits);
             } else {
                 ((TextView) navHeader.findViewById(R.id.brand)).setText(name);
                 ((TextView) navHeader.findViewById(R.id.email)).setText(email);
@@ -205,7 +215,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                     e.printStackTrace();
                 }
                 if (fileInput == null) {
-                    ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.mipmap.logo);
+                    ((ImageView) navHeader.findViewById(R.id.profile)).setImageResource(R.drawable.bits);
                 } else {
                     ((ImageView) navHeader.findViewById(R.id.profile)).setImageBitmap(BitmapFactory.decodeStream(fileInput));
 //                    setToolBarAvatar(profilepic);
@@ -388,22 +398,22 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         if (this.drawerlayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerlayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-//            if (doubleBackToExitPressedOnce) {
-//                super.onBackPressed();
-//                this.finishAffinity();
-//                return;
-//            }
-//
-//            this.doubleBackToExitPressedOnce = true;
-//            Toast.makeText(this, "Press BACK Again to Exit", Toast.LENGTH_SHORT).show();
-//
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    doubleBackToExitPressedOnce = false;
-//                }
-//            }, 2000);
+//            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                this.finishAffinity();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Press BACK Again to Exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }
     }
 
@@ -448,22 +458,22 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                Boolean m = Pattern.compile("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$").matcher(url).find();
-                if (!url.isEmpty()) {
-                    if (url.contains("http://")) {
-                        if (!url.contains("www.")) {
-                            if (!m) {
-                                url = "http://www." + url.substring(url.indexOf("http://") + 7);
-                            }
-                        }
-                    } else {
-                        if (url.contains("www.") || m) {
-                            url = "http://" + url;
-                        } else {
-                            url = "http:" + url;
-                        }
-                    }
-                }
+//                Boolean m = Pattern.compile("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$").matcher(url).find();
+//                if (!url.isEmpty()) {
+//                    if (url.contains("http://")) {
+//                        if (!url.contains("www.")) {
+//                            if (!m) {
+//                                url = "http://www." + url.substring(url.indexOf("http://") + 7);
+//                            }
+//                        }
+//                    } else {
+//                        if (url.contains("www.") || m) {
+//                            url = "http://" + url;
+//                        } else {
+//                            url = "http:" + url;
+//                        }
+//                    }
+//                }
                 urls.add(url);
                 fileInput.close();
             }
@@ -659,7 +669,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                         public void onClick(View v) {
                             String url = urls.get(viewPager.getCurrentItem() - 1);
                             if (!url.isEmpty()) {
-                                Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
+                                Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+
+//                                Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
                                 startActivity(browserIntent);
                             }
                         }
@@ -691,7 +703,8 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                             public void onClick(View v) {
                                 String url = urls.get(viewPager.getCurrentItem() - 1);
                                 if (!url.isEmpty()) {
-                                    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
+                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+//                                    new Intent("android.intent.action.VIEW", Uri.parse(url));
                                     startActivity(browserIntent);
                                 }
                             }
@@ -738,7 +751,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                             public void onClick(View v) {
                                 String url = urls.get(viewPager.getCurrentItem() - 1);
                                 if (!url.isEmpty()) {
-                                    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
+                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+
+//                                    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
                                     startActivity(browserIntent);
                                 }
                             }
@@ -805,7 +820,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                                     * Intent browserIntent = new Intent(LibRes.this,LoadBooks.class).putExtra("url","http://eprints.bits-pilani.ac.in/");
                                         startActivity(browserIntent);*/
                                     Log.d("myTest", url.toString());
-                                    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
+                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+
+//                                    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
                                     startActivity(browserIntent);
                                 }
                             }

@@ -2,6 +2,7 @@ package com.bitspilani.library.infoBits;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
@@ -57,7 +61,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class infoBitsBulletin extends homepage {
+import static com.bitspilani.library.infoBits.homepage.apiURL;
+import static com.bitspilani.library.infoBits.homepage.avatar;
+import static com.bitspilani.library.infoBits.homepage.fileInput;
+import static com.bitspilani.library.infoBits.homepage.imageApiURL;
+import static com.bitspilani.library.infoBits.homepage.password;
+import static com.bitspilani.library.infoBits.homepage.username;
+
+public class infoBitsBulletin extends AppCompatActivity {
 
     private DBHandler dbhandler;
     private TabLayout mTabLayout;
@@ -70,14 +81,17 @@ public class infoBitsBulletin extends homepage {
     ProgressBar spinner;
     JSONObject internal;
     List<String> updatevalues;
-   // public String[] tabTitles = {"CHEMICAL", "CIVIL", "EEE", "CS", "MECH", "PHARMA", "BIO", "CHEM", "ECO", "MATHS", "PHY", "HUM", "MAN"};
+    // public String[] tabTitles = {"CHEMICAL", "CIVIL", "EEE", "CS", "MECH", "PHARMA", "BIO", "CHEM", "ECO", "MATHS", "PHY", "HUM", "MAN"};
     public ArrayList<String> tabTitles = new ArrayList<>();
     private GoogleApiClient client;
+    Toolbar toolbar;
+    File dir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_infobitsbulletin);
+        dir = getFilesDir();
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -586,6 +600,17 @@ public class infoBitsBulletin extends homepage {
 
         // Add the request to the RequestQueue.
         queue.add(jsonObjReq);
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(infoBitsBulletin.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 }
 

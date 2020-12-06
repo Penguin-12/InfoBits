@@ -3,17 +3,19 @@ package com.bitspilani.library.infoBits;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class downloadable_links extends homepage implements  AdapterView.OnItemClickListener{
+public class downloadable_links extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    ListView listView ;
+    ListView listView;
     private String[] values;
     private String[] links;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

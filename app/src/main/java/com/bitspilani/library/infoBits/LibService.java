@@ -1,15 +1,21 @@
 package com.bitspilani.library.infoBits;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class LibService extends homepage {
+public class LibService extends AppCompatActivity {
 
     //    DrawerLayout drawerlayout;
 //    NavigationView navigationView;
@@ -17,11 +23,17 @@ public class LibService extends homepage {
     private ProgressBar spinner;
     boolean isStudent = false;
     ConstraintLayout facultyServices;
+    Toolbar toolbar;
+    DrawerLayout drawerlayout;
+    SharedPreferences login_info;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lib_service);
+        login_info = getSharedPreferences("login_info", Context.MODE_PRIVATE);
+
         if (login_info.getString("category", "").equals("Student"))
             isStudent = true;
         facultyServices = (ConstraintLayout) findViewById(R.id.facultyServices);
@@ -92,87 +104,98 @@ public class LibService extends homepage {
 //    }
 
     public void onClickLF(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent i = new Intent(LibService.this, lfmsAllItems.class);
-            startActivity(i);
-        }
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent i = new Intent(LibService.this, lfmsAllItems.class);
+        startActivity(i);
+//        }
     }
 
     public void onClickIBB(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent i = new Intent(LibService.this, infoBitsBulletin.class);
-            startActivity(i);
-        }
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent i = new Intent(LibService.this, infoBitsBulletin.class);
+        startActivity(i);
+//        }
     }
 
     public void onClickConnWL(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        if (isConnected()) {
+            Intent i = new Intent(LibService.this, ConnectWithLibrary.class);
+            startActivity(i);
         } else {
-            spinner.setVisibility(View.VISIBLE);
-            if (isConnected()) {
-                Intent i = new Intent(LibService.this, ConnectWithLibrary.class);
-                startActivity(i);
-            } else {
-                spinner.setVisibility(View.INVISIBLE);
-                Toast.makeText(this, "You need internet to access this feature", Toast.LENGTH_SHORT).show();
-            }
+            spinner.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, "You need internet to access this feature", Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 
     public void onClickDNews(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent i = new Intent(LibService.this, DailyNews.class);
-            startActivity(i);
-        }
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent i = new Intent(LibService.this, DailyNews.class);
+        startActivity(i);
+//        }
     }
 
     public void onClickPeriodical(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/search/print_and_online_ejournals.php");
-            startActivity(browserIntent);
-        }
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/search/print_and_online_ejournals.php");
+        startActivity(browserIntent);
+//        }
     }
 
     public void onClickAskForArticles(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/articlerequest.php");
-            startActivity(browserIntent);
-        }
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/articlerequest.php");
+        startActivity(browserIntent);
+//        }
     }
 
     public void onClickPCS(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/anti-plagiarism_software.php");
-            startActivity(browserIntent);
-        }
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/anti-plagiarism_software.php");
+        startActivity(browserIntent);
+//        }
     }
 
     public void onClickBAMD(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/books@mydesk.php");
+        startActivity(browserIntent);
+//        }
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
         } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/books@mydesk.php");
-            startActivity(browserIntent);
+            Toast.makeText(LibService.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            return false;
         }
     }
 }

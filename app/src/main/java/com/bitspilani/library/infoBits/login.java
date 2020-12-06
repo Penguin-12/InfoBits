@@ -2,14 +2,19 @@ package com.bitspilani.library.infoBits;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -38,7 +43,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class login extends homepage {
+import static com.bitspilani.library.infoBits.homepage.apiURL;
+import static com.bitspilani.library.infoBits.homepage.imageApiURL;
+
+public class login extends AppCompatActivity {
 
     private EditText username;
     private EditText password;
@@ -47,6 +55,9 @@ public class login extends homepage {
     String UserName, Password;
     ProgressBar spinner;
     private GoogleApiClient client;
+    File dir;
+    SharedPreferences login_info;
+    SharedPreferences.Editor edit_login_info;
 
 
     @Override
@@ -54,7 +65,9 @@ public class login extends homepage {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_login);
 
+        dir = getFilesDir();
         login_info = getSharedPreferences("login_info", MODE_PRIVATE);
+        edit_login_info = login_info.edit();
         Toolbar toolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -159,7 +172,6 @@ public class login extends homepage {
 
     public void toggleInterface(int spinview, Boolean handle) {
         spinner.setVisibility(spinview);
-        spinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         username.setEnabled(handle);
         password.setEnabled(handle);
         bt_signin.setClickable(handle);
@@ -288,5 +300,16 @@ public class login extends homepage {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(login.this, "Not Connected to Internet!", Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 }

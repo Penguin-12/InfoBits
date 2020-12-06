@@ -2,10 +2,12 @@ package com.bitspilani.library.infoBits;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class InstitutionalRepo extends homepage {
+public class InstitutionalRepo extends AppCompatActivity {
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -122,8 +122,9 @@
 
             <ProgressBar
                 android:id="@+id/progressBar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/register"
                 android:layout_centerHorizontal="true"
                 android:indeterminate="false"

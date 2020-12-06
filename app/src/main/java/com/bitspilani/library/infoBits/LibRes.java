@@ -2,16 +2,18 @@ package com.bitspilani.library.infoBits;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 
-public class LibRes extends homepage {
+public class LibRes extends AppCompatActivity {
 
     //    DrawerLayout drawerlayout;
 //    NavigationView navigationView;
 //    MenuItem cat;
     private ProgressBar spinner;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +86,15 @@ public class LibRes extends homepage {
     }
 
     public void onClickOPAC(View view) {
-        if (user.isEmpty()) {
-            LogInToast();
-        } else {
-            spinner.setVisibility(View.VISIBLE);
-            Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://libcatalog.bits-pilani.ac.in/");
+//        if (user.isEmpty()) {
+//            LogInToast();
+//        } else {
+        spinner.setVisibility(View.VISIBLE);
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://libcatalog.bits-pilani.ac.in/");
 
-            //new Intent(homepage.this,LoadBooks.class).putExtra("url","http://172.21.1.37");
-            startActivity(browserIntent);
-        }
+        //new Intent(homepage.this,LoadBooks.class).putExtra("url","http://172.21.1.37");
+        startActivity(browserIntent);
+
     }
 
     public void onClickEB(View view) {

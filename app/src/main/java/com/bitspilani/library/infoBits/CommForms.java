@@ -34,6 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.bitspilani.library.infoBits.homepage.apiURL;
+import static com.bitspilani.library.infoBits.homepage.password;
+import static com.bitspilani.library.infoBits.homepage.username;
 public class CommForms extends ConnectWithLibrary {
 
     int[] Forms = {R.layout.breco, R.layout.dlost, R.layout.database, R.layout.service, R.layout.breview, R.layout.feedback};

@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context="com.bitspilani.library.infoBits.ConnectWithLibrary"
     android:orientation="vertical"
+
     android:nestedScrollingEnabled="false">
 
     <ScrollView

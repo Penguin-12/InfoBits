@@ -5,32 +5,37 @@
         <item
             android:id="@+id/os_id"
             android:title="@string/drawer_menu_os"
-            android:icon="@mipmap/os"
+            android:icon="@drawable/os"
             />
         <item
             android:id="@+id/comm_id"
             android:title="@string/title_activity_communication_panel"
-            android:icon="@mipmap/cwl"
-            />
+            android:icon="@drawable/cwl" />
 
         <item
             android:id="@+id/news_id"
             android:title="@string/title_activity_daily_news"
-            android:icon="@drawable/dn"
-            />
+            android:icon="@drawable/dn" />
 
-        <item
-            android:id="@+id/ibb_id"
-            android:title="@string/drawer_menu_ibb"
-            android:icon="@drawable/info"
-            />
+        <!--        <item-->
+        <!--            android:id="@+id/ibb_id"-->
+        <!--            android:title="@string/drawer_menu_ibb"-->
+        <!--            android:icon="@drawable/info"-->
+        <!--            />-->
 
         <item
             android:id="@+id/lf_id"
             android:title="@string/drawer_menu_lf"
-            android:icon="@drawable/lf"
-            >
-        </item>
+            android:icon="@drawable/lf" />
+        <item
+            android:id="@+id/pf_id"
+            android:icon="@drawable/periodical_finder"
+            android:title="@string/drawer_menu_pf" />
+        <item
+            android:id="@+id/afa_id"
+            android:icon="@drawable/ask_for_articles"
+            android:title="@string/drawer_menu_afa" />
+
     </group>
 
     <group android:checkableBehavior="single" android:id="@+id/lresgrp">
@@ -49,13 +54,40 @@
         <item
             android:id="@+id/od_id"
             android:title="@string/drawer_menu_odb"
-            android:icon="@drawable/od"
-            />
+            android:icon="@drawable/od" />
 
         <item
             android:id="@+id/opac_id"
             android:title="@string/drawer_menu_opac"
-            android:icon="@drawable/opac"
-            />
+            android:icon="@drawable/opac" />
+        <item
+            android:id="@+id/ir_id"
+            android:icon="@drawable/ir"
+            android:title="@string/drawer_menu_ir" />
+        <item
+            android:id="@+id/qp_id"
+            android:icon="@drawable/question_papers"
+            android:title="@string/drawer_menu_qp" />
+        <!--        <item-->
+        <!--            android:id="@+id/ndl_id"-->
+        <!--            android:title="@string/drawer_menu_ndl"-->
+        <!--            android:icon="@drawable/ndl"-->
+        <!--            />-->
+        <!--        <item-->
+        <!--            android:id="@+id/vlab_id"-->
+        <!--            android:title="@string/drawer_menu_vlab"-->
+        <!--            android:icon="@drawable/vlab"-->
+        <!--            />-->
+        <!--        <item-->
+        <!--            android:id="@+id/sp_id"-->
+        <!--            android:title="@string/drawer_menu_sp"-->
+        <!--            android:icon="@drawable/swayamprabha"-->
+        <!--            />-->
+        <!--        <item-->
+        <!--            android:id="@+id/sg_id"-->
+        <!--            android:title="@string/drawer_menu_sg"-->
+        <!--            android:icon="@drawable/shodhganga"-->
+        <!--            />-->
+
     </group>
 </menu>

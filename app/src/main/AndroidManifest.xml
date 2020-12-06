@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".InstitutionalRepo"></activity>
+        <activity android:name=".InstitutionalRepo" />
         <activity android:name=".CustomWebView" />
         <activity
             android:name=".Cover"
@@ -43,7 +43,7 @@
         <activity
             android:name=".LibRes"
             android:label="@string/libres"
-            android:logo="@mipmap/libr"
+            android:logo="@drawable/libr"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -53,7 +53,7 @@
         <activity
             android:name=".LibService"
             android:label="@string/libservice"
-            android:logo="@mipmap/libs"
+            android:logo="@drawable/libs"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -65,29 +65,29 @@
             android:label="@string/title_activity_communication_panel"
             android:parentActivityName=".LibService"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DailyNews"
             android:label="@string/title_activity_daily_news"
             android:parentActivityName=".LibService"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CommForms"
             android:label="CommForm"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".login"
             android:label="@string/Login"
             android:parentActivityName=".homepage"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user_settings"
             android:label="@string/title_activity_user_settings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity> <!-- <activity -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- <activity -->
         <!-- android:name=".signup" -->
         <!-- android:label="@string/Signup" -->
         <!-- android:parentActivityName=".homepage" -->
@@ -102,19 +102,19 @@
             android:label="@string/title_activity_ebooks"
             android:parentActivityName=".LibRes"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".downloadable_links"
             android:label="@string/title_activity_ebooks"
             android:parentActivityName=".ebooks"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".infoBitsBulletin"
             android:label="@string/title_infoBits"
             android:parentActivityName=".LibService"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -127,7 +127,7 @@
             android:label="@string/online_db"
             android:parentActivityName=".LibRes"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".lfmsAllItems"
             android:label="@string/lost_and_found"

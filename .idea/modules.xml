@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-DVM-Group Projects-InfoBITS.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-DVM-Group Projects-InfoBITS.iml" group="InfoBITS" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects-DVM-Group Projects-InfoBITS-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidStudioProjects-DVM-Group Projects-InfoBITS-app.iml" group="InfoBITS/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-InfoBits.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-InfoBits.iml" group="InfoBits" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DVM-Group Projects-InfoBITS.iml" filepath="$PROJECT_DIR$/.idea/modules/DVM-Group Projects-InfoBITS.iml" group="InfoBITS" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DVM-Group Projects-InfoBITS-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DVM-Group Projects-InfoBITS-app.iml" group="InfoBITS/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/InfoBITS.iml" filepath="$PROJECT_DIR$/.idea/modules/InfoBITS.iml" group="InfoBITS" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/InfoBITS-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/InfoBITS-app.iml" group="InfoBITS/app" />

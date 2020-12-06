@@ -2,6 +2,7 @@ package com.bitspilani.library.infoBits;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +13,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class OnlineDb extends homepage {
+import static com.bitspilani.library.infoBits.homepage.avatar;
+import static com.bitspilani.library.infoBits.homepage.fileInput;
+
+public class OnlineDb extends AppCompatActivity {
+    Toolbar toolbar;
+    File dir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +26,7 @@ public class OnlineDb extends homepage {
         setContentView(R.layout.activity_online_db);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        dir = getFilesDir();
         final String[] OnlineDb = {"ACM (Association for Computing Machinery)", "AIP (American Institute of Physics)", "ACS (American Chemical Society)", "APS (American Physical Society)", "ASCE (American Society of Civil Engineers)", "ASME (American Society of Mechanical Engineers)", "Annual Reviews", "Bentham Science", "Capitaline Plus", "Cambridge University Press", "EBSCO Information Services", "Emerald Group Publishing", "Grammarly", "HEDBIB (International Bibliographic Database on Higher Education)", "HeySuccess", "IEEE (Institute of Electrical and Electronics Engineers)", "IndiaStat", "IOP (Institute of Physics)", "Institute of Mechanical Engineers(IMechE)", "JSTOR", "MathSciNet", "MethodsNow", "OUP (Oxford University Press)", "Portland Press", "Project Euclid", "Project Muse", "Proquest Online", "RSC (Royal Society of Chemistry)", "Springer", "Science Direct", "SciFinder", "SIAM (Society for Industrial and Apllied Mathematics)", "Taylor & Francis", "Wiley Interscience", "Learn More", "Open Access Resources"};
         final String[] DbLinks = {"http://portal.acm.org/dl.cfm", "http://www.aip.org", "http://pubs.acs.org/about.html", "http://www.aps.org/", "http://ascelibrary.org/journals/all_journal_titles", "http://asmedigitalcollection.asme.org/journals.aspx", "http://arjournals.annualreviews.org/", "http://www.eurekaselect.com", "http://www.capitaline.com/user/framepage.asp?id=1", "http://www.journals.cambridge.org/", "http://search.ebscohost.com/", "http://www.emeraldinsight.com/", "https://www.grammarly.com/edu", "http://hedbib.iau-aiu.net/", "https://www.heysuccess.com", "http://www.ieee.org/ieeexplore/", "https://www.indiastat.com", "http://www.iop.org/EJ/", "http://library.bits-pilani.ac.in/pdf/ime.pdf", "http://www.jstor.org/", "http://www.ams.org/mathscinet/index.html", "https://sso.cas.org/as/Jd2pN/resume/as/authorization.ping", "http://www.oxfordjournals.org/en/", "http://www.portlandpress.com/", "http://projecteuclid.org/", "http://muse.jhu.edu/", "http://search.proquest.com/?accountid=81487", "http://www.rsc.org/is/journals/current/ejs.htm", "http://www.springerlink.com/journals/", "http://www.sciencedirect.com/", "http://library.bits-pilani.ac.in/services/SciFinder_registration.php", "http://epubs.siam.org", "http://www.tandfonline.com/", "http://www3.interscience.wiley.com/cgi-bin/home", "http://library.bits-pilani.ac.in/pdf/Databases/Complete_List_of_Onlne_Databases.pdf", "http://library.bits-pilani.ac.in/services/open_access_links.php"};
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, OnlineDb);
