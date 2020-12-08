@@ -1,7 +1,9 @@
 package com.bitspilani.library.infoBits.network;
 
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+
+import androidx.collection.LruCache;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;

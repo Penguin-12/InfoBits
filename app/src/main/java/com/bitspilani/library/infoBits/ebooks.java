@@ -3,17 +3,17 @@ package com.bitspilani.library.infoBits;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 public class ebooks extends AppCompatActivity {
 
@@ -49,7 +49,9 @@ public class ebooks extends AppCompatActivity {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ecm.ebscohost.com/User/Login"));
+                Intent i = new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://ecm.ebscohost.com/User/Login").putExtra("title", "EBSCO");
+
+//                new Intent(Intent.ACTION_VIEW, Uri.parse("https://ecm.ebscohost.com/User/Login"));
                 startActivity(i);
             }
         });
@@ -60,18 +62,18 @@ public class ebooks extends AppCompatActivity {
 //                new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.tandfebooks.com/page/openaccess#listofOAtitles")),
 //                new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oapen.org/search?sort=year;f1-language=English")),
 //                new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.intechopen.com/books")),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://open.umn.edu/opentextbooks/"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://link.springer.com/search/page/3?showAll=false&facet-content-type=%22Book%22"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://www.tandfebooks.com/page/openaccess#listofOAtitles"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://www.oapen.org/search?sort=year;f1-language=English"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://www.intechopen.com/books"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://open.umn.edu/opentextbooks/").putExtra("title", "Open TextBook Library"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://link.springer.com/search/page/3?showAll=false&facet-content-type=%22Book%22").putExtra("title", "Springer"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://www.tandfebooks.com/page/openaccess#listofOAtitles").putExtra("title", "Taylor and Francis"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://www.oapen.org/search?sort=year;f1-language=English").putExtra("title", "Open Access"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://www.intechopen.com/books").putExtra("title", "Intech"),
                 new Intent(ebooks.this, downloadable_links.class).putExtra("reference", "Elsevier e-Books"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://www.expresslibrary.mheducation.com/home"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://www.cambridge.org/core/what-we-publish/books"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://onlinelibrary.wiley.com/action/showPublications?PubType=book"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://iopscience.iop.org/bookList/10/2"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://opentexts.world/"),
-                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/pdf/EBSCO%20eBooks%20Mannual.pdf\""),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://www.expresslibrary.mheducation.com/home").putExtra("title", "McGraw Hill"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://www.cambridge.org/core/what-we-publish/books").putExtra("title", "").putExtra("title", "Cambridge University Press"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://onlinelibrary.wiley.com/action/showPublications?PubType=book").putExtra("title", "Willey BlackWell"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://iopscience.iop.org/bookList/10/2").putExtra("title", "IOP Science"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://opentexts.world/").putExtra("title", "Open Texts"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/pdf/EBSCO%20eBooks%20Mannual.pdf").putExtra("title", "EBSCO"),
 
 //                new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.expresslibrary.mheducation.com/home")),
 //                new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.cambridge.org/core/what-we-publish/books")),

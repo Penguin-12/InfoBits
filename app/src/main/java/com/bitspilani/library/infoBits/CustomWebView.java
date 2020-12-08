@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
@@ -14,11 +12,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 public class CustomWebView extends AppCompatActivity {
 
     WebView webView;
     ProgressBar spinner;
     Toolbar toolbar;
+
     @Override
     public void onBackPressed() {
         if (webView.canGoBack())
@@ -37,7 +39,9 @@ public class CustomWebView extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String url = bundle.getString("url");
+        String title = bundle.getString("title");
         setSupportActionBar(toolbar);
+        toolbar.setTitle(title);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

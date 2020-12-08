@@ -7,13 +7,14 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class LibService extends AppCompatActivity {
 
@@ -32,6 +33,8 @@ public class LibService extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lib_service);
+        spinner = (ProgressBar) findViewById(R.id.progressBarService);
+
         login_info = getSharedPreferences("login_info", Context.MODE_PRIVATE);
 
         if (login_info.getString("category", "").equals("Student"))
@@ -51,7 +54,6 @@ public class LibService extends AppCompatActivity {
                 finish();
             }
         });
-        spinner = (ProgressBar) findViewById(R.id.progressBarService);
 //        navigationView.setNavigationItemSelectedListener(this);
 //        navigationView.setItemIconTintList(null);
 //        cat = navigationView.getMenu().getItem(0);
@@ -153,7 +155,7 @@ public class LibService extends AppCompatActivity {
 //            LogInToast();
 //        } else {
         spinner.setVisibility(View.VISIBLE);
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/search/print_and_online_ejournals.php");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/search/print_and_online_ejournals.php").putExtra("title", "Periodical Finder");
         startActivity(browserIntent);
 //        }
     }
@@ -163,7 +165,7 @@ public class LibService extends AppCompatActivity {
 //            LogInToast();
 //        } else {
         spinner.setVisibility(View.VISIBLE);
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/articlerequest.php");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/articlerequest.php").putExtra("title", "Ask For Articles");
         startActivity(browserIntent);
 //        }
     }
@@ -173,7 +175,7 @@ public class LibService extends AppCompatActivity {
 //            LogInToast();
 //        } else {
         spinner.setVisibility(View.VISIBLE);
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/anti-plagiarism_software.php");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/anti-plagiarism_software.php").putExtra("title", "Anti Plagiarism Software");
         startActivity(browserIntent);
 //        }
     }
@@ -183,7 +185,7 @@ public class LibService extends AppCompatActivity {
 //            LogInToast();
 //        } else {
         spinner.setVisibility(View.VISIBLE);
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/books@mydesk.php");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/books@mydesk.php").putExtra("title", "Books At My Desk");
         startActivity(browserIntent);
 //        }
     }

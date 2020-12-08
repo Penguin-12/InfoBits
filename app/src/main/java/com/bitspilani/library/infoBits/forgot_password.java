@@ -1,13 +1,12 @@
 package com.bitspilani.library.infoBits;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bitspilani.library.infoBits.R;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class forgot_password extends AppCompatActivity {
 

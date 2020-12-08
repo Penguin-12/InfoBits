@@ -13,9 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +21,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -114,7 +115,7 @@ public class login extends AppCompatActivity {
 
     public void OnClick_forgot_pass(View view) {
         if (isConnected()) {
-            Intent browserIntent = new Intent(login.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/account/forgot.php");
+            Intent browserIntent = new Intent(login.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/account/forgot.php").putExtra("title", "Forgot Password");
             startActivity(browserIntent);
         }
     }
@@ -122,7 +123,7 @@ public class login extends AppCompatActivity {
 
     public void userReg(View view) {
         if (isConnected()) {
-            Intent browserIntent = new Intent(login.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/account/signup.php");
+            Intent browserIntent = new Intent(login.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/account/signup.php").putExtra("title", "Sign Up");
             startActivity(browserIntent);
         }
     }

@@ -13,14 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -37,9 +29,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -149,7 +150,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 if (clickedItem != 0) {
                     Intent i = null;
                     if (clickedItem == R.id.os_id) {
-                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/");
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/").putExtra("title", "One Search");
 
 //                                new Intent(Intent.ACTION_VIEW, Uri.parse("https://idpb.bits-pilani.ac.in/"));
                     } else if (clickedItem == R.id.comm_id) {
@@ -164,9 +165,9 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                     else if (clickedItem == R.id.lf_id) {
                         i = new Intent(homepage.this, lfmsAllItems.class);
                     } else if (clickedItem == R.id.pf_id) {
-                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/search/print_and_online_ejournals.php");
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/search/print_and_online_ejournals.php").putExtra("title", "Periodical Finder");
                     } else if (clickedItem == R.id.afa_id) {
-                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/articlerequest.php");
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/articlerequest.php").putExtra("title", "Ask For Articles");
                     }/*else if (id == R.id.qp_id) {
             Intent qpI = new Intent(homepage.this, downloadable_links.class);
             qpI.putExtra("title", "Question Papers");
@@ -177,11 +178,11 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                     } else if (clickedItem == R.id.od_id) {
                         i = new Intent(homepage.this, OnlineDb.class);
                     } else if (clickedItem == R.id.opac_id) {
-                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://libcatalog.bits-pilani.ac.in/");
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://libcatalog.bits-pilani.ac.in/").putExtra("title", "Library Catalog");
                     } else if (clickedItem == R.id.ir_id) {
                         i = new Intent(homepage.this, InstitutionalRepo.class);
                     } else if (clickedItem == R.id.qp_id) {
-                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/Question_Papers/question_paper.php");
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/Question_Papers/question_paper.php").putExtra("title", "Question Papers");
                     }
                     clickedItem = 0;
                     if (connectWithLibrary) {
@@ -365,7 +366,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         } else {
             spinner.setVisibility(View.VISIBLE);
             Intent browserIntent =
-                    new Intent(this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/");
+                    new Intent(this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/").putExtra("title", "One Search");
 
 //            new Intent(Intent.ACTION_VIEW, Uri.parse("https://idpb.bits-pilani.ac.in/"));//http://search.ebscohost.com/login.aspx?authtype=uid&user=bits2015&password=pilani&profile=eds
             startActivity(browserIntent);
@@ -669,7 +670,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                         public void onClick(View v) {
                             String url = urls.get(viewPager.getCurrentItem() - 1);
                             if (!url.isEmpty()) {
-                                Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+                                Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url).putExtra("title", "Notice");
 
 //                                Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
                                 startActivity(browserIntent);
@@ -703,7 +704,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                             public void onClick(View v) {
                                 String url = urls.get(viewPager.getCurrentItem() - 1);
                                 if (!url.isEmpty()) {
-                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url).putExtra("title", "Notice");
 //                                    new Intent("android.intent.action.VIEW", Uri.parse(url));
                                     startActivity(browserIntent);
                                 }
@@ -751,7 +752,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                             public void onClick(View v) {
                                 String url = urls.get(viewPager.getCurrentItem() - 1);
                                 if (!url.isEmpty()) {
-                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url).putExtra("title", "Notice");
 
 //                                    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
                                     startActivity(browserIntent);
@@ -820,7 +821,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                                     * Intent browserIntent = new Intent(LibRes.this,LoadBooks.class).putExtra("url","http://eprints.bits-pilani.ac.in/");
                                         startActivity(browserIntent);*/
                                     Log.d("myTest", url.toString());
-                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url);
+                                    Intent browserIntent = new Intent(homepage.this, CustomWebView.class).putExtra("url", url).putExtra("title", "Notice");
 
 //                                    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
                                     startActivity(browserIntent);

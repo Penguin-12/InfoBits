@@ -2,10 +2,11 @@ package com.bitspilani.library.infoBits;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class LibRes extends AppCompatActivity {
 
@@ -90,7 +91,7 @@ public class LibRes extends AppCompatActivity {
 //            LogInToast();
 //        } else {
         spinner.setVisibility(View.VISIBLE);
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://libcatalog.bits-pilani.ac.in/");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://libcatalog.bits-pilani.ac.in/").putExtra("title", "Library Catalog");
 
         //new Intent(homepage.this,LoadBooks.class).putExtra("url","http://172.21.1.37");
         startActivity(browserIntent);
@@ -104,17 +105,17 @@ public class LibRes extends AppCompatActivity {
     }
 
     public void onClickQP(View view) {
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/Question_Papers/question_paper.php");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/Question_Papers/question_paper.php").putExtra("title", "Question Papers");
         startActivity(browserIntent);
     }
 
     public void onClickNDL(View view) {
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://ndl.iitkgp.ac.in/index.php");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://ndl.iitkgp.ac.in/index.php").putExtra("title", "National Digital Library");
         startActivity(browserIntent);
     }
 
     public void onClickShodhG(View view) {
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://shodhganga.inflibnet.ac.in");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://shodhganga.inflibnet.ac.in").putExtra("title", "Shodh Ganga");
         startActivity(browserIntent);
     }
 
@@ -124,12 +125,12 @@ public class LibRes extends AppCompatActivity {
     }
 
     public void onClickVLAB(View view) {
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://www.vlab.co.in/");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://www.vlab.co.in/").putExtra("title", "Virtual Labs");
         startActivity(browserIntent);
     }
 
     public void onClickSwayamP(View view) {
-        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://www.swayamprabha.gov.in/");
+        Intent browserIntent = new Intent(this, CustomWebView.class).putExtra("url", "https://www.swayamprabha.gov.in/").putExtra("title", "Swayam Prabha");
         startActivity(browserIntent);
     }
 

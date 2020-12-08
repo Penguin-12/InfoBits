@@ -128,23 +128,34 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:visibility="gone">
-        <android.support.design.widget.FloatingActionButton android:id="@+id/prev"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin" android:src="@android:drawable/ic_media_previous"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_media_previous"
             app:layout_anchorGravity="bottom|end"
             android:visibility="visible"
             app:backgroundTint="@color/colorPrimaryDark"
             android:layout_centerVertical="true" />
-        <android.support.design.widget.FloatingActionButton android:id="@+id/next"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_anchorGravity="bottom|end" android:src="@android:drawable/ic_media_next"
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="bottom|end"
+            android:src="@android:drawable/ic_media_next"
             app:backgroundTint="@color/colorPrimaryDark"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/fab_margin" />
-        <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_anchorGravity="bottom|end" android:src="@android:drawable/ic_input_add"
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="bottom|end"
+            android:src="@android:drawable/ic_input_add"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
@@ -170,7 +181,7 @@
             android:layout_toStartOf="@+id/send"
             android:padding="5dp" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/send"
@@ -188,24 +199,35 @@
         android:layout_gravity="center"
         android:visibility="visible"
         android:layout_alignParentBottom="true">
-        <android.support.design.widget.FloatingActionButton android:id="@+id/back"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin" android:src="@android:drawable/ic_media_previous"
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_media_previous"
             app:layout_anchorGravity="bottom|end"
             android:layout_alignParentLeft="true"
             app:backgroundTint="@color/colorPrimaryDark"
             android:layout_centerVertical="true" />
-        <android.support.design.widget.FloatingActionButton android:id="@+id/delete"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_anchorGravity="bottom|end" android:src="@android:drawable/ic_delete"
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="bottom|end"
+            android:src="@android:drawable/ic_delete"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="false"
             android:layout_margin="@dimen/fab_margin"
             android:layout_centerVertical="true" />
 
-        <android.support.design.widget.FloatingActionButton android:id="@+id/reply"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            app:layout_anchorGravity="bottom|end" android:src="@android:drawable/ic_dialog_email"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="bottom|end"
+            android:src="@android:drawable/ic_dialog_email"
             app:backgroundTint="@color/colorPrimaryDark"
             android:layout_centerInParent="true" />
 

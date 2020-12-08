@@ -9,10 +9,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +40,7 @@ public class Cover extends AppCompatActivity {
     //  public final static String imageApiURL = "http://192.168.43.71:80/infoBITS/uploads/";
     String actString = "notices";
     int imgs;
-    ProgressBar spinner;
+    //    ProgressBar spinner;
     DBHandler dbhandler;
     JSONObject internal;
     File dir;
@@ -51,7 +50,7 @@ public class Cover extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cover);
-        spinner = (ProgressBar) findViewById(R.id.progressBar);
+//        spinner = (ProgressBar) findViewById(R.id.progressBar);
         // dbhandler = new DBHandler(this,null,null);
         // internal = dbhandler.selectData(2,"1 ORDER BY id ASC");
         dir = getFilesDir();
@@ -155,7 +154,7 @@ public class Cover extends AppCompatActivity {
                         }
                     }
                     if (loader == 0) {
-                        launchHome();
+//                        launchHome();
                     }
                 }
             }
@@ -163,6 +162,28 @@ public class Cover extends AppCompatActivity {
             Toast.makeText(Cover.this, e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    public void updateNotice() {
+        String urlString = apiURL + actString + ".php";
+        String newsString = apiURL + "daily_news" + ".php?action=homepage";
+//        spinner.setVisibility(View.VISIBLE);
+        if (isConnected()) {
+            new APICall().execute(urlString);
+            new APICall2().execute(newsString);
+        }
+    }
+
+    public void launchHome() {
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        Intent i = new Intent(Cover.this, homepage.class);
+                        startActivity(i);
+                        finish();
+                    }
+                }, 1000
+        );
     }
 
     private class LoadImage extends AsyncTask<String, String, Bitmap> {
@@ -219,12 +240,76 @@ public class Cover extends AppCompatActivity {
             }
             if (imgs == tot) {
                 imgs = 0;
-                launchHome();
+//                launchHome();
+            }
+        }
+    }
+
+    public void updateImage(String filename, String link, String key, String type) throws UnsupportedEncodingException {
+        File file = new File(dir, filename);
+        if (file.exists()) {
+            if (type.equals("botw")) {
+                String[] addvalues = {key, link.substring(0, link.indexOf("---")), link.substring(link.indexOf("---") + 3), filename};
+                dbhandler.addData(3, addvalues);
+                //Toast.makeText(this, key + " " + link + " " + type + " " + filename, Toast.LENGTH_LONG).show();
+            } else {
+                String[] addvalues = {key, filename, URLEncoder.encode(link, "UTF-8")};
+                dbhandler.addData(2, addvalues);
+                //Toast.makeText(this, key + " " + URLEncoder.encode(link, "UTF-8") + " " + type + " " + filename, Toast.LENGTH_LONG).show();
             }
         }
     }
 
     private class APICall extends AsyncTask<String, Integer, String> {
+
+        String err;
+        String type;
+
+        @Override
+        protected String doInBackground(String[] params) {
+            String urlString = params[0];
+            StringBuilder responseStrBuilder = new StringBuilder();
+            String inputStr;
+            type = "image";
+            if (params[0].contains("daily_news")) {
+                type = "daily_news";
+            }
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader streamReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+                while ((inputStr = streamReader.readLine()) != null)
+                    responseStrBuilder.append(inputStr);
+            } catch (Exception e) {
+                err = "Network Error! Ensure you're connected to Internet";
+            }
+            return responseStrBuilder.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (!result.isEmpty()) {
+                try {
+                    JSONObject json = new JSONObject(result);
+                    updateImageData(json, type);
+//                    launchHome();
+                } catch (Exception e) {
+                    Toast.makeText(Cover.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+//                    launchHome();
+                }
+            } else {
+                if (!err.isEmpty()) {
+                    if (type.equals("image")) {
+                        Toast.makeText(Cover.this, err, Toast.LENGTH_LONG).show();
+//                        launchHome();
+                    }
+                }
+            }
+        }
+    }
+
+    private class APICall2 extends AsyncTask<String, Integer, String> {
 
         String err;
         String type;
@@ -271,43 +356,5 @@ public class Cover extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public void updateImage(String filename, String link, String key, String type) throws UnsupportedEncodingException {
-        File file = new File(dir, filename);
-        if (file.exists()) {
-            if (type.equals("botw")) {
-                String[] addvalues = {key, link.substring(0, link.indexOf("---")), link.substring(link.indexOf("---") + 3), filename};
-                dbhandler.addData(3, addvalues);
-                //Toast.makeText(this, key + " " + link + " " + type + " " + filename, Toast.LENGTH_LONG).show();
-            }
-            else{
-                String[] addvalues = {key, filename, URLEncoder.encode(link, "UTF-8")};
-                dbhandler.addData(2, addvalues);
-                //Toast.makeText(this, key + " " + URLEncoder.encode(link, "UTF-8") + " " + type + " " + filename, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    public void updateNotice(){
-        String urlString = apiURL + actString + ".php";
-        String newsString = apiURL + "daily_news" + ".php?action=homepage";
-        spinner.setVisibility(View.VISIBLE);
-        if(isConnected()) {
-            new APICall().execute(urlString);
-            new APICall().execute(newsString);
-        }
-    }
-
-    public void launchHome(){
-        new android.os.Handler().postDelayed(
-            new Runnable() {
-                public void run() {
-                    Intent i = new Intent(Cover.this, homepage.class);
-                    startActivity(i);
-                    finish();
-                }
-            }, 3000
-        );
     }
 }

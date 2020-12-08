@@ -15,13 +15,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +24,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -43,6 +43,7 @@ import com.bitspilani.library.infoBits.network.VolleySingleton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -573,7 +574,7 @@ public class infoBitsBulletin extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                                   //  Uri uri = Uri.parse(links.get(position)); // missing 'http://' will cause crashed
-                                    Intent intent = new Intent(infoBitsBulletin.this, CustomWebView.class).putExtra("url", links.get(position));
+                                    Intent intent = new Intent(infoBitsBulletin.this, CustomWebView.class).putExtra("url", links.get(position)).putExtra("title", "Info BITS Bulletin");
                                     startActivity(intent);
                                 }
                             });
