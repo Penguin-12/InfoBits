@@ -351,8 +351,8 @@ public class Cover extends AppCompatActivity {
                 if (!err.isEmpty()) {
                     if (type.equals("image")) {
                         Toast.makeText(Cover.this, err, Toast.LENGTH_LONG).show();
-                        launchHome();
                     }
+                    launchHome();
                 }
             }
         }

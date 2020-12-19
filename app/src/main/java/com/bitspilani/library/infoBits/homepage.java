@@ -150,7 +150,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
                 if (clickedItem != 0) {
                     Intent i = null;
                     if (clickedItem == R.id.os_id) {
-                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/").putExtra("title", "One Search");
+                        i = new Intent(homepage.this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/").putExtra("title", "Shibboleth Remote Access");
 
 //                                new Intent(Intent.ACTION_VIEW, Uri.parse("https://idpb.bits-pilani.ac.in/"));
                     } else if (clickedItem == R.id.comm_id) {
@@ -366,7 +366,7 @@ public class homepage extends AppCompatActivity implements NavigationView.OnNavi
         } else {
             spinner.setVisibility(View.VISIBLE);
             Intent browserIntent =
-                    new Intent(this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/").putExtra("title", "One Search");
+                    new Intent(this, CustomWebView.class).putExtra("url", "https://idpb.bits-pilani.ac.in/").putExtra("title", "Shibboleth Remote Access");
 
 //            new Intent(Intent.ACTION_VIEW, Uri.parse("https://idpb.bits-pilani.ac.in/"));//http://search.ebscohost.com/login.aspx?authtype=uid&user=bits2015&password=pilani&profile=eds
             startActivity(browserIntent);

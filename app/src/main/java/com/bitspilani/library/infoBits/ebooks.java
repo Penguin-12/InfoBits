@@ -43,8 +43,8 @@ public class ebooks extends AppCompatActivity {
 //            setToolBarAvatar(profilepic);
 //        }
         ListView l = (ListView) findViewById(R.id.ebookList);
-        String[] ebooks = {"Pearson Education", "Open Textbook Library", "Springer", "Taylor & Francis eBooks", "Open Access", "Intech", "Science Direct", "Mc Graw Hill India", "Cambridge University Press", "Wiley Blackwell", "IOP Science", "Open Texts", "EBSCO"};
-        Integer[] ebookImages = {R.mipmap.pearson_education1, R.mipmap.opentextbook_library1, R.mipmap.springer, R.mipmap.taylor1, R.mipmap.oapen, R.mipmap.intech1, R.mipmap.science_direct1, R.mipmap.mcgrawhill, R.mipmap.cambridge, R.mipmap.wiley, R.mipmap.iopscience, R.mipmap.open_texts, R.mipmap.ebsco1};
+        String[] ebooks = {"Pearson Education", "Open Textbook Library", "Springer", "Taylor & Francis eBooks", "Open Access", "Intech", "Science Direct", "Mc Graw Hill India", "Cambridge University Press", "Wiley Blackwell", "IOP Science", "Open Texts", "Perpetual Access", "EBSCO"};
+        Integer[] ebookImages = {R.mipmap.pearson_education1, R.mipmap.opentextbook_library1, R.mipmap.springer, R.mipmap.taylor1, R.mipmap.oapen, R.mipmap.intech1, R.mipmap.science_direct1, R.mipmap.mcgrawhill, R.mipmap.cambridge, R.mipmap.wiley, R.mipmap.iopscience, R.mipmap.open_texts, R.mipmap.perpetual_access, R.mipmap.ebsco1};
         TextView click = (TextView) findViewById(R.id.ebscoClick);
         click.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +73,8 @@ public class ebooks extends AppCompatActivity {
                 new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://onlinelibrary.wiley.com/action/showPublications?PubType=book").putExtra("title", "Willey BlackWell"),
                 new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://iopscience.iop.org/bookList/10/2").putExtra("title", "IOP Science"),
                 new Intent(ebooks.this, CustomWebView.class).putExtra("url", "https://opentexts.world/").putExtra("title", "Open Texts"),
+                new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/services/E-books.php").putExtra("title", "Perpetual Access"),
+
                 new Intent(ebooks.this, CustomWebView.class).putExtra("url", "http://library.bits-pilani.ac.in/pdf/EBSCO%20eBooks%20Mannual.pdf").putExtra("title", "EBSCO"),
 
 //                new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.expresslibrary.mheducation.com/home")),

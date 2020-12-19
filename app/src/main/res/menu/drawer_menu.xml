@@ -2,15 +2,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single" android:id="@+id/lservgrp">
-        <item
-            android:id="@+id/os_id"
-            android:title="@string/drawer_menu_os"
-            android:icon="@drawable/os"
-            />
-        <item
-            android:id="@+id/comm_id"
-            android:title="@string/title_activity_communication_panel"
-            android:icon="@drawable/cwl" />
+
 
         <item
             android:id="@+id/news_id"
@@ -36,6 +28,15 @@
             android:icon="@drawable/ask_for_articles"
             android:title="@string/drawer_menu_afa" />
 
+        <item
+            android:id="@+id/comm_id"
+            android:icon="@drawable/cwl"
+            android:title="@string/title_activity_communication_panel" />
+
+        <item
+            android:id="@+id/os_id"
+            android:icon="@drawable/bplogo"
+            android:title="@string/drawer_menu_os" />
     </group>
 
     <group android:checkableBehavior="single" android:id="@+id/lresgrp">

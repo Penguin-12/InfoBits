@@ -102,7 +102,7 @@
             android:layout_height="50dp"
             android:fitsSystemWindows="true"
             android:minHeight="?attr/actionBarSize"
-            android:padding="4dp"
+            android:padding="6dp"
             android:title="@string/homepage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -148,8 +148,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView14"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="16dp"
                         app:cardCornerRadius="3dp"
                         app:cardElevation="0dp"
@@ -209,8 +209,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView15"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="16dp"
                         app:cardCornerRadius="3dp"
                         app:cardElevation="0dp"
@@ -266,8 +266,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView16"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="16dp"
                         app:cardCornerRadius="3dp"
                         app:cardElevation="0dp"
@@ -280,7 +280,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="fitXY"
-                            android:src="@drawable/os" />
+                            android:src="@drawable/bplogo" />
                     </androidx.cardview.widget.CardView>
 
 
@@ -293,7 +293,7 @@
                         android:layout_marginEnd="16dp"
                         android:fontFamily="@font/mulish_regular"
                         android:gravity="center"
-                        android:text="One Search (Shibboleth)"
+                        android:text="Shibboleth Remote Access"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@+id/cardView16"
@@ -314,9 +314,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/mulish_bold"
-            android:text="Let’s explore \nyour BITS library "
+            android:text="Let’s explore \nBITS Pilani Library! "
             android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textSize="23sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nav_toolbar" />
